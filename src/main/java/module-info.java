@@ -6,4 +6,7 @@ module sae.velizy.javasae {
 
     opens sae.velizy.javasae to javafx.fxml;
     exports sae.velizy.javasae;
+    exports vue;
+    exports modele;
+    exports controleur;
 }
