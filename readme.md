@@ -25,7 +25,7 @@
 **Adam** :
 
 * Implémentation : `Ville`, `Membre`, `Vente`, `Scenario`
-* Système de lecture du fichier `distances.csv` en `Map<Pair<Ville,Ville>, Integer>`
+* Système de lecture du fichier `distances.txt` en `Map<Pair<Ville,Ville>, Integer>`
 
 **Nourane** :
 
