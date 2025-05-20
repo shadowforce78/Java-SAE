@@ -6,14 +6,14 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
 
 ### 🔧 Développement
 
-* [ ] Créer projet Maven + architecture MVC
-* [ ] Lire les fichiers distances + membres + scénarios
+* [x] Créer projet Maven + architecture MVC
+* [x] Lire les fichiers distances + membres + scénarios
 * [ ] Implémenter les classes :
 
-  * [ ] `Ville`
-  * [ ] `Membre`
-  * [ ] `Vente`
-  * [ ] `Scenario`
+  * [x] `Ville`
+  * [x] `Membre`
+  * [x] `Vente`
+  * [x] `Scenario`
   * [ ] `CarteGraph`
 * [ ] Algo 1 : Solution simple (cours de graphe)
 * [ ] Algo 2 : Heuristique (glouton/local opti)
