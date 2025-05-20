@@ -1,4 +1,4 @@
-package sae.velizy.javasae;
+package vue;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

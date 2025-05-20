@@ -1,4 +1,4 @@
-package sae.velizy.javasae;
+package controleur;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
