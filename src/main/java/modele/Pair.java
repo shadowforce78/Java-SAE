@@ -26,8 +26,7 @@ public class Pair<A, B> {
         return second;
     }
 
-    public Ville getFirst() {
-
-        return (Ville) first;
+    public A getFirst() {
+        return first;
     }
 }
