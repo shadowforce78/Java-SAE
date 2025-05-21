@@ -1,5 +1,6 @@
 package modele;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,19 +13,21 @@ public class TestParcours {
 
     public static void main(String[] args) {
         try {
+            // Utilisation de File pour des chemins compatibles multi-OS
+            File dossierData = new File("pokemon_appli_data");
+            File fichierDistances = new File(dossierData, "distances.txt");
+            File fichierScenario = new File(dossierData, "scenario_0.txt");
+            File fichierMembres = new File(dossierData, "membres_APPLI.txt");
+
             // Chargement des distances entre les villes
             System.out.println("Chargement du fichier des distances...");
-            String cheminFichierDistances = "pokemon_appli_data/distances.txt";
-            String cheminFichierScenario = "pokemon_appli_data/scenario_0.txt";
-            String cheminFichierMembres = "pokemon_appli_data/membres_APPLI.txt";
-            
-            Map<Pair<Ville, Ville>, Integer> distances = DistanceParser.lireFichierDistances(cheminFichierDistances);
+            Map<Pair<Ville, Ville>, Integer> distances = DistanceParser.lireFichierDistances(fichierDistances.getPath());
             CarteGraph carte = new CarteGraph(distances);
             
             // Chargement du scénario 0
             System.out.println("Chargement du scénario 0...");
-            Scenario scenario = ScenarioParser.lireFichierScenario(cheminFichierScenario, cheminFichierMembres);
-            
+            Scenario scenario = ScenarioParser.lireFichierScenario(fichierScenario.getPath(), fichierMembres.getPath());
+
             // Génération de l'itinéraire avec l'algorithme de parcours simple
             System.out.println("\n=== ALGORITHME DE PARCOURS SIMPLE ===");
             ParcoursSimple parcours = new ParcoursSimple(carte);

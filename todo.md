@@ -15,7 +15,7 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
   * [x] `Vente`
   * [x] `Scenario`
   * [x] `CarteGraph`
-* [ ] Algo 1 : Solution simple (cours de graphe)
+* [x] Algo 1 : Solution simple (cours de graphe)
 * [ ] Algo 2 : Heuristique (glouton/local opti)
 * [ ] Algo 3 : k meilleures solutions
 * [ ] Intégrer algo ↔ modèle ↔ IHM

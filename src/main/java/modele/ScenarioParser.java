@@ -1,9 +1,8 @@
 package modele;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,8 +21,9 @@ public class ScenarioParser {
         // Charger les membres
         Map<String, Membre> membres = chargerMembres(cheminFichierMembres);
 
-        // Lire les lignes du fichier de scénario
-        List<String> lignes = Files.readAllLines(Paths.get(cheminFichierScenario), StandardCharsets.UTF_8);
+        // Utilisation de File pour assurer la compatibilité multi-OS
+        File fichierScenario = new File(cheminFichierScenario);
+        List<String> lignes = Files.readAllLines(fichierScenario.toPath(), StandardCharsets.UTF_8);
         List<Vente> ventes = new ArrayList<>();
 
         // Pour chaque ligne, créer une vente
@@ -59,7 +59,7 @@ public class ScenarioParser {
         }
 
         // Extraire le nom du fichier pour l'utiliser comme nom du scénario
-        String nomScenario = Paths.get(cheminFichierScenario).getFileName().toString();
+        String nomScenario = fichierScenario.getName();
 
         return new Scenario(nomScenario, ventes);
     }
@@ -71,7 +71,9 @@ public class ScenarioParser {
      * @throws IOException En cas d'erreur de lecture du fichier
      */
     private static Map<String, Membre> chargerMembres(String cheminFichierMembres) throws IOException {
-        List<String> lignes = Files.readAllLines(Paths.get(cheminFichierMembres), StandardCharsets.UTF_8);
+        // Utilisation de File pour assurer la compatibilité multi-OS
+        File fichierMembres = new File(cheminFichierMembres);
+        List<String> lignes = Files.readAllLines(fichierMembres.toPath(), StandardCharsets.UTF_8);
         Map<String, Membre> membres = new HashMap<>();
 
         for (String ligne : lignes) {
