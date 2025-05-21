@@ -64,7 +64,10 @@ public class ParcoursSimple {
             int distance = carte.getDistance(depart, arrivee);
 
             if (distance == Integer.MAX_VALUE) {
-                throw new IllegalStateException("Pas de chemin trouvé entre " + depart.getNom() + " et " + arrivee.getNom());
+                // Si aucune distance n'est trouvée, utiliser une valeur par défaut de 50 km
+                System.out.println("Avertissement: Distance non trouvée entre " + depart.getNom() +
+                                  " et " + arrivee.getNom() + ". Utilisation d'une distance par défaut de 50 km.");
+                distance = 50;
             }
 
             distanceTotale += distance;
