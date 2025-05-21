@@ -14,7 +14,7 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
   * [x] `Membre`
   * [x] `Vente`
   * [x] `Scenario`
-  * [ ] `CarteGraph`
+  * [x] `CarteGraph`
 * [ ] Algo 1 : Solution simple (cours de graphe)
 * [ ] Algo 2 : Heuristique (glouton/local opti)
 * [ ] Algo 3 : k meilleures solutions
