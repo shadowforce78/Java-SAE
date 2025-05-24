@@ -5,6 +5,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 public class fenetrePrincipale extends Application {
 
     public static void main(String[] args) {
@@ -17,5 +19,8 @@ public class fenetrePrincipale extends Application {
         Scene scene = new Scene(root, 500, 500);
         stage.setScene(scene);
         stage.show();
+
+        File fileCss = new File("css" + File.separator + "style.css");
+        scene.getStylesheets().add(fileCss.toURI().toString());
     }
 }
