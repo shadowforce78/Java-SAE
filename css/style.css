@@ -1,0 +1,90 @@
+/* Style général */
+.root {
+    -fx-background-color: #ffffcc; /* Jaune pâle */
+    -fx-font-family: "Segoe UI", sans-serif;
+}
+
+/* Menu bar */
+.menu-bar {
+    -fx-background-color: #d9d9d9;
+}
+
+.menu {
+    -fx-text-fill: black;
+}
+
+/* Titre de section */
+.label.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* Bouton vert */
+.button-green {
+    -fx-background-color: #66cc66;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 10 20;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-border-color: #ffcc66;
+    -fx-border-width: 4;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #ff6666;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 30px;
+    -fx-border-color: transparent;
+    -fx-background-color: #ff6666;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell:filled:selected, .table-cell:filled:selected {
+    -fx-background-color: #cccccc;
+}
+
+/* Radio buttons */
+.radio-button {
+    -fx-text-fill: black;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #dddddd;
+    -fx-padding: 5;
+    -fx-border-radius: 3;
+    -fx-background-radius: 3;
+}
+/* GridPane orange (statistiques et création) */
+.grid-orange {
+    -fx-background-color: #ffcc66;
+    -fx-padding: 15;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* Style général des labels */
+.label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+}
+
+/* Labels statistiques ou champs descriptifs */
+.label-info {
+    -fx-font-size: 13px;
+    -fx-text-fill: #444444;
+}
