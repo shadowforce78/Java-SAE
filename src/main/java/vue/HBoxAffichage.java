@@ -1,6 +1,5 @@
 package vue;
 
-import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 
 public class HBoxAffichage extends HBox {
