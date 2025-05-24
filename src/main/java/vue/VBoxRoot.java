@@ -15,6 +15,6 @@ public class VBoxRoot extends VBox {
 
         HBox hBoxScenario = new HBoxAffichage();
 
-        this.getChildren().addAll(menuBar, hBoxScenario );
+        this.getChildren().addAll(menuBar, hBoxScenario);
     }
 }
