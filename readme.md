@@ -1,5 +1,3 @@
-
-
 ## 🗓️ ROADMAP DÉTAILLÉE JOUR PAR JOUR
 
 ---
@@ -102,6 +100,10 @@
 
 * Liaison IHM ↔ Algo ↔ Modèle
 * Exécution en temps réel des algos à partir des scénarios IHM
+* Création d'une interface `IAlgorithme` pour uniformiser les différents algorithmes
+* Développement d'un contrôleur principal pour connecter l'IHM aux algorithmes
+* Implémentation d'une méthode de calcul de distance totale pour les itinéraires générés
+* Tests d'intégration entre les composants du MVC
 
 **Nourane** :
 
@@ -115,6 +117,10 @@
 
 * Rapport : structure + algorithmes détaillés + complexité
 * Capture console, temps de calcul
+* Rapport : section structure du projet (présentation architecture MVC)
+* Documentation des algorithmes avec analyse de complexité
+* Capture des résultats de console pour les différents scénarios
+* Mise en place d'un système de benchmark pour comparer les temps d'exécution des algorithmes
 
 **Nourane** :
 
