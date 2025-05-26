@@ -4,12 +4,21 @@ import javafx.scene.layout.VBox;
 
 
 public class VBoxDroite extends VBox {
+    private static TableParcours table;
+    private static GridPaneCreation createScenario;
     public VBoxDroite(){
         super(20);
-        TableParcours table = new TableParcours();
-        GridPaneCreation createScenario = new GridPaneCreation();
+        table = new TableParcours();
+        createScenario = new GridPaneCreation();
         createScenario.getStyleClass().add("grid-orange");
-
         this.getChildren().addAll(table, createScenario);
+    }
+
+    public static TableParcours getTable() {
+        return table;
+    }
+
+    public static GridPaneCreation getCreateScenario() {
+        return createScenario;
     }
 }

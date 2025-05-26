@@ -1,32 +1,36 @@
 package vue;
 
+import controleur.Controleur;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 public class GridPaneModification extends GridPane {
-    public GridPaneModification(){
+    public GridPaneModification(Controleur controleur){
         this.setGridLinesVisible(true);
 
-        Label labelVendeur = new Label("_Vendeur");
-        labelVendeur.setMnemonicParsing(true);
+        Label labelVendeur = new Label("Vendeur");
         TextField textVendeur =  new TextField();
+        textVendeur.setEditable(false);
         textVendeur.setPromptText("Cliquez sur une ligne du tableau...");
         labelVendeur.setLabelFor(textVendeur);
 
-        Label labelClient = new Label("_Client");
-        labelClient.setMnemonicParsing(true);
+        Label labelClient = new Label("Client");
         TextField textClient =  new TextField();
+        textClient.setEditable(false);
         textClient.setPromptText("Cliquez sur une ligne du tableau...");
         labelClient.setLabelFor(textVendeur);
 
-        Label labelKilometre = new Label("_Nombre de kilomètres");
-        labelKilometre.setMnemonicParsing(true);
+        Label labelKilometre = new Label("Nombre de kilomètres");
         TextField textKilometre =  new TextField();
+        textKilometre.setEditable(false);
         textKilometre.setPromptText("Cliquez sur une ligne du tableau...");
         labelKilometre.setLabelFor(textKilometre);
 
         Button boutonModification =  new Button("Modifier la ligne");
         boutonModification.getStyleClass().add("button-green");
+        boutonModification.setUserData("Modification");
+        boutonModification.addEventHandler(ActionEvent.ACTION, controleur);
 
 
         this.add(new Label("Modification d'un Scénario"), 0, 0, 4, 1);

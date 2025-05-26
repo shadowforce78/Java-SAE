@@ -9,12 +9,17 @@ public class GridPaneCreation extends GridPane {
     TextField textNom;
     public GridPaneCreation(){
         this.setGridLinesVisible(true);
+
         Label labelTitre = new Label("Création d'un scénario");
-        Label labelNom = new Label("Nom du scénario");
+        Label labelNom = new Label("_Nom du scénario");
         textNom = new TextField();
         textNom.setPromptText("Entrez le nom du nouveau scénario...");
         labelNom.setLabelFor(textNom);
-        Button boutonCreation = new Button("Créer un scénario");
+        labelNom.setMnemonicParsing(true);
+
+        Button boutonCreation = new Button("_Créer un scénario");
+        boutonCreation.setMnemonicParsing(true);
+        boutonCreation.setUserData("Création");
         boutonCreation.getStyleClass().add("button-green");
 
         this.add(labelTitre, 1, 0, 3, 1);
