@@ -11,7 +11,7 @@ public class ConstantesVues {
     public static List<String> importScenarios(){
         List<String> scenarios = new ArrayList<>();
 
-        for(File fichierScenario : Objects.requireNonNull(new File("pokemon_appli_data").listFiles())){
+        for(File fichierScenario : Objects.requireNonNull(new File("scenario").listFiles())){
             scenarios.add(fichierScenario.getName());
         }
         return scenarios;
