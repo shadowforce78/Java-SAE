@@ -5,8 +5,8 @@ import javafx.scene.layout.HBox;
 public class HBoxAffichage extends HBox {
     public HBoxAffichage(){
         super(30);
-        VBoxStatCreation panesStatsCreation = new VBoxStatCreation();
-        VBoxAffichageParcours tableParcours = new VBoxAffichageParcours();
+        VBoxGauche panesStatsCreation = new VBoxGauche();
+        VBoxDroite tableParcours = new VBoxDroite();
 
         this.getChildren().addAll(panesStatsCreation, tableParcours);
     }
