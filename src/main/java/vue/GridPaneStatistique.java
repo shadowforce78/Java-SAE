@@ -8,23 +8,23 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class GridPaneStatistique extends GridPane {
-    private int kilometres = 0; // Il faudra mettre la valeur de l'algo 1 du scénario 1
+    private Label labelNombreKilometre;
     private ComboBox<String> choixAlgo = new ComboBox<>();
     private ComboBox<Integer> kSolutions = new ComboBox<>();
     public GridPaneStatistique(Controleur controleur){
         this.setGridLinesVisible(true);
 
         Label labelKilometre = new Label("Kilomètres parcourus : ");
+        labelNombreKilometre = new Label("");
         labelKilometre.getStyleClass().add("label-info");
-
-        Label labelVilles = new Label("Villes parcourus : ");
-        labelVilles.getStyleClass().add("label-info");
 
         Label labelAlgo = new Label("_Algorithme : ");
         labelAlgo.getStyleClass().add("label-info");
         labelAlgo.setMnemonicParsing(true);
         choixAlgo.getItems().addAll("Cours", "Heuristique", "K Solutions");
         labelAlgo.setLabelFor(choixAlgo);
+        choixAlgo.addEventHandler(ActionEvent.ACTION, controleur);
+        choixAlgo.setValue(choixAlgo.getItems().getFirst());
 
         Label labelKSolutions = new Label("k meilleurs solutions : ");
         labelKSolutions.getStyleClass().add("label-info");
@@ -33,6 +33,7 @@ public class GridPaneStatistique extends GridPane {
             kSolutions.getItems().add(i);
         }
         labelKSolutions.setLabelFor(kSolutions);
+        kSolutions.setValue(3);
 
         Button enregistrementAlgo = new Button("Selectionner l'algorithme");
         enregistrementAlgo.getStyleClass().add("button-green");
@@ -42,17 +43,26 @@ public class GridPaneStatistique extends GridPane {
         this.add(new Label("Statistiques"), 1, 0, 2, 1);
 
         this.add(labelKilometre, 0, 1);
-        this.add(new Label(String.valueOf(kilometres)), 1, 1);
+        this.add(labelNombreKilometre, 1, 1);
 
-        this.add(labelVilles, 0, 2);
-        // Ajouter un objet pour afficher les villes ?
+        this.add(labelAlgo, 0, 2);
+        this.add(choixAlgo, 1, 2);
 
-        this.add(labelAlgo, 0, 3);
-        this.add(choixAlgo, 1, 3);
+        this.add(labelKSolutions, 0, 3);
+        this.add(kSolutions, 1, 3);
 
-        this.add(labelKSolutions, 0, 4);
-        this.add(kSolutions, 1, 4);
+        this.add(enregistrementAlgo, 0, 4, 2, 1);
+    }
 
-        this.add(enregistrementAlgo, 0, 5, 2, 1);
+    public void enableKSolutions(){
+        kSolutions.setDisable(false);
+    }
+
+    public String getAlgorithme(){
+        return choixAlgo.getValue();
+    }
+
+    public void updateKilometres(int parKilometres){
+        labelNombreKilometre.setText(String.valueOf(parKilometres));
     }
 }
