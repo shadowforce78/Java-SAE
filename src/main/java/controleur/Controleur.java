@@ -3,10 +3,11 @@ package controleur;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.RadioMenuItem;
-import javafx.scene.layout.HBox;
-import vue.*;
+import vue.GridPaneModification;   
+import vue.GridPaneStatistique;
+import vue.HBoxAffichage;
+import vue.VBoxGauche;
 
 public class Controleur implements EventHandler {
 

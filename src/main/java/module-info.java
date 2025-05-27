@@ -4,7 +4,6 @@ module sae.velizy.javasae {
 
     requires org.controlsfx.controls;
 
-    opens sae.velizy.javasae to javafx.fxml;
 
     exports vue;
     exports modele;
