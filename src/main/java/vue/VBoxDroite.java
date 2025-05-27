@@ -9,7 +9,7 @@ public class VBoxDroite extends VBox {
     public VBoxDroite(){
         super(20);
         table = new TableParcours();
-        createScenario = new GridPaneCreation();
+        createScenario = new GridPaneCreation(VBoxRoot.getControleur());
         createScenario.getStyleClass().add("grid-orange");
         this.getChildren().addAll(table, createScenario);
     }

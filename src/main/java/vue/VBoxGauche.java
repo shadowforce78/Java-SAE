@@ -2,23 +2,26 @@ package vue;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import modele.ConstantesVues;
 
 public class VBoxGauche extends VBox {
-    private int chNumScenario;
     private Label scenario;
     private static GridPaneStatistique gridStatParcours;
     private static GridPaneModification gridModif;
     public VBoxGauche(){
         super(20);
-        chNumScenario = 0;
-        scenario = new Label("Scenario " + chNumScenario);
+        scenario = new Label(new ConstantesVues().getItemsMenuScenarios().getFirst());
         scenario.getStyleClass().add("title");
 
-        gridStatParcours = new GridPaneStatistique();
+        gridStatParcours = new GridPaneStatistique(VBoxRoot.getControleur());
         gridStatParcours.getStyleClass().add("grid-orange");
         gridModif = new GridPaneModification(VBoxRoot.getControleur());
         gridModif.getStyleClass().add("grid-orange");
         this.getChildren().addAll(scenario, gridStatParcours, gridModif);
+    }
+
+    public void updateScenario(String nouveauScenario){
+        scenario.setText(nouveauScenario);
     }
 
     public static GridPaneStatistique getGridStatParcours() {

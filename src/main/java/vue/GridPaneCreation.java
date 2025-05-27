@@ -1,5 +1,7 @@
 package vue;
 
+import controleur.Controleur;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -7,7 +9,7 @@ import javafx.scene.layout.GridPane;
 
 public class GridPaneCreation extends GridPane {
     TextField textNom;
-    public GridPaneCreation(){
+    public GridPaneCreation(Controleur controleur){
         this.setGridLinesVisible(true);
 
         Label labelTitre = new Label("Création d'un scénario");
@@ -21,6 +23,7 @@ public class GridPaneCreation extends GridPane {
         boutonCreation.setMnemonicParsing(true);
         boutonCreation.setUserData("Création");
         boutonCreation.getStyleClass().add("button-green");
+        boutonCreation.addEventHandler(ActionEvent.ACTION, controleur);
 
         this.add(labelTitre, 1, 0, 3, 1);
         this.add(labelNom, 0, 1);

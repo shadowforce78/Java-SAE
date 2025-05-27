@@ -1,5 +1,7 @@
 package vue;
 
+import controleur.Controleur;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -9,7 +11,7 @@ public class GridPaneStatistique extends GridPane {
     private int kilometres = 0; // Il faudra mettre la valeur de l'algo 1 du scénario 1
     private ComboBox<String> choixAlgo = new ComboBox<>();
     private ComboBox<Integer> kSolutions = new ComboBox<>();
-    public GridPaneStatistique(){
+    public GridPaneStatistique(Controleur controleur){
         this.setGridLinesVisible(true);
 
         Label labelKilometre = new Label("Kilomètres parcourus : ");
@@ -18,19 +20,24 @@ public class GridPaneStatistique extends GridPane {
         Label labelVilles = new Label("Villes parcourus : ");
         labelVilles.getStyleClass().add("label-info");
 
-        Label labelAlgo = new Label("Algorithme : ");
+        Label labelAlgo = new Label("_Algorithme : ");
         labelAlgo.getStyleClass().add("label-info");
-        choixAlgo.getItems().addAll("Algorithme 1", "Algorithme 2", "Algorithme 3");
-        for (int i = 1; i < 11; i++){
-            kSolutions.getItems().add(i);
-        }
+        labelAlgo.setMnemonicParsing(true);
+        choixAlgo.getItems().addAll("Cours", "Heuristique", "K Solutions");
+        labelAlgo.setLabelFor(choixAlgo);
 
         Label labelKSolutions = new Label("k meilleurs solutions : ");
         labelKSolutions.getStyleClass().add("label-info");
         kSolutions.setDisable(true);
+        for (int i = 1; i < 11; i++){
+            kSolutions.getItems().add(i);
+        }
+        labelKSolutions.setLabelFor(kSolutions);
 
         Button enregistrementAlgo = new Button("Selectionner l'algorithme");
         enregistrementAlgo.getStyleClass().add("button-green");
+        enregistrementAlgo.setUserData("Stats");
+        enregistrementAlgo.addEventHandler(ActionEvent.ACTION, controleur);
 
         this.add(new Label("Statistiques"), 1, 0, 2, 1);
 

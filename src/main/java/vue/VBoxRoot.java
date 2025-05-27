@@ -1,10 +1,13 @@
 package vue;
 
 import controleur.Controleur;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import modele.ConstantesVues;
+
+import java.util.Objects;
 
 public class VBoxRoot extends VBox {
     private static MenuBar menuBar;
@@ -21,6 +24,10 @@ public class VBoxRoot extends VBox {
             menuItem.setUserData(item);
             menuScenario.getItems().add(menuItem);
             menuItem.setToggleGroup(groupeScenario);
+            if(item.equals(new ConstantesVues().getItemsMenuScenarios().getFirst())){
+                menuItem.setSelected(true);
+            }
+            menuItem.addEventHandler(ActionEvent.ACTION, controleur);
         }
         Menu menuQuitter = new Menu("Quitter");
         menuBar.getMenus().addAll(menuScenario, menuQuitter);
