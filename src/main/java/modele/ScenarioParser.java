@@ -65,6 +65,22 @@ public class ScenarioParser {
     }
 
     /**
+     * Sauvegarde un scénario dans un fichier.
+     * @param scenario Le scénario à sauvegarder.
+     * @param cheminFichier Le chemin du fichier où sauvegarder le scénario.
+     * @throws IOException En cas d'erreur d'écriture du fichier.
+     */
+    public static void sauvegarderScenario(Scenario scenario, String cheminFichier) throws IOException {
+        File fichierSortie = new File(cheminFichier);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fichierSortie, StandardCharsets.UTF_8))) {
+            for (Vente vente : scenario.getVentes()) {
+                writer.write(vente.getVendeur().getPseudo() + " -> " + vente.getAcheteur().getPseudo());
+                writer.newLine();
+            }
+        }
+    }
+
+    /**
      * Charge les membres depuis un fichier
      * @param cheminFichierMembres Chemin vers le fichier des membres
      * @return Une map associant le pseudo d'un membre à son objet Membre
