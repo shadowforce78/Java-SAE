@@ -17,11 +17,16 @@ public class VBoxGauche extends VBox {
         gridStatParcours.getStyleClass().add("grid-orange");
         gridModif = new GridPaneModification(VBoxRoot.getControleur());
         gridModif.getStyleClass().add("grid-orange");
+        this.setMaxWidth(400);
         this.getChildren().addAll(scenario, gridStatParcours, gridModif);
     }
 
     public void updateScenario(String nouveauScenario){
         scenario.setText(nouveauScenario);
+    }
+
+    public String getScenario(){
+        return scenario.getText();
     }
 
     public static GridPaneStatistique getGridStatParcours() {

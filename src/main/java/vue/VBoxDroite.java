@@ -11,6 +11,7 @@ public class VBoxDroite extends VBox {
         table = new TableParcours();
         createScenario = new GridPaneCreation(VBoxRoot.getControleur());
         createScenario.getStyleClass().add("grid-orange");
+        this.setMaxWidth(350);
         this.getChildren().addAll(table, createScenario);
     }
 
