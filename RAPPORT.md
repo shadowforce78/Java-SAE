@@ -45,5 +45,102 @@ Soit *N* le nombre de ventes dans un scénario.
 **Nom de l'algorithme retourné par `getNom()`**: "Parcours Simple"
 
 ---
-*(Les sections pour d'autres algorithmes, le benchmark, les captures console et les temps de calcul seront ajoutées ici au fur et à mesure de leur développement.)*
+### 2.2. Algorithme de Parcours Heuristique (`ParcoursHeuristique.java`)
+
+**Description :**
+
+Cet algorithme implémente une approche gloutonne pour optimiser l'itinéraire. À chaque étape, il choisit la destination la plus proche parmi les destinations valides, tout en respectant la contrainte fondamentale que le vendeur doit être visité avant l'acheteur pour chaque vente.
+
+L'algorithme fonctionne selon la logique suivante :
+1. Démarrage à la ville du vendeur de la première vente.
+2. À chaque étape, identification des destinations possibles :
+   - Acheteurs dont le vendeur a déjà été visité (priorité absolue)
+   - Vendeurs pas encore visités
+3. Sélection de la destination la plus proche selon la distance euclidienne.
+4. Mise à jour des états des ventes (vendeur visité, vente complète).
+
+**Analyse de Complexité :**
+
+Soit *N* le nombre de ventes et *V* le nombre total de villes à visiter.
+
+*   **`genererItineraire(Scenario scenario)`**:
+    *   À chaque itération de la boucle principale, l'algorithme parcourt toutes les ventes pour trouver la destination la plus proche (O(N)).
+    *   Il y a au maximum V itérations (nombre de villes dans l'itinéraire final).
+    *   La complexité temporelle est donc **O(V × N)**, où V ≤ 2N dans le pire cas, donnant O(N²).
+    *   La complexité spatiale est **O(N)** pour les structures de données auxiliaires (HashSet).
+
+*   **`calculerDistanceTotale(List<Ville> itineraire)`**: Identique à `ParcoursSimple` - **O(V)**.
+
+**Nom de l'algorithme retourné par `getNom()`**: "Heuristique Glouton"
+
+---
+### 2.3. Algorithme des K Meilleures Solutions (`KMeilleuresSolutions.java`)
+
+**Description :**
+
+Cet algorithme utilise une approche de backtracking pour explorer exhaustivement l'espace des solutions possibles et identifier les k meilleures selon la distance totale. Il maintient une file de priorité (PriorityQueue) des k meilleures solutions trouvées jusqu'à présent.
+
+Le processus de backtracking :
+1. État initial : premier vendeur visité, états des ventes initialisés.
+2. À chaque niveau de récursion :
+   - Génération de toutes les destinations possibles valides
+   - Pour chaque destination : exploration récursive avec mise à jour d'état
+   - Élagage des branches dont la distance partielle dépasse déjà la k-ème meilleure solution
+3. Condition d'arrêt : toutes les ventes sont complètes.
+4. Sauvegarde de la solution si elle fait partie des k meilleures.
+
+**Analyse de Complexité :**
+
+*   **`genererKMeilleuresSolutions(Scenario scenario)`**:
+    *   Dans le pire cas, l'algorithme explore toutes les permutations possibles des destinations.
+    *   Le nombre d'états possibles peut être exponentiel : **O(V!)** où V est le nombre de villes.
+    *   Cependant, l'élagage réduit significativement cet espace dans la pratique.
+    *   La complexité spatiale inclut la pile de récursion : **O(V)** plus la PriorityQueue : **O(k)**.
+
+*   **`genererItineraire(Scenario scenario)`**: Appelle `genererKMeilleuresSolutions()` et retourne la meilleure - même complexité temporelle.
+
+*   **Optimisations implementées** :
+    *   Élagage par borne supérieure (branch and bound)
+    *   Évitement des états redondants
+    *   File de priorité pour maintenir efficacement les k meilleures solutions
+
+**Nom de l'algorithme retourné par `getNom()`**: "K Meilleures Solutions"
+
+## 3. Système de Benchmark et Analyse Comparative
+
+### 3.1. Architecture du Système de Benchmark (`BenchmarkAlgorithmes.java`)
+
+Le système de benchmark a été conçu pour évaluer objectivement les performances des trois algorithmes selon deux critères principaux :
+
+1. **Qualité de la solution** : Distance totale de l'itinéraire généré
+2. **Performance temporelle** : Temps d'exécution de l'algorithme
+
+**Fonctionnalités principales :**
+
+*   **Mesure précise du temps** : Utilisation de `System.nanoTime()` pour une précision au niveau nanoseconde
+*   **Comparaison multi-scénarios** : Tests automatisés sur plusieurs scénarios de complexité variable
+*   **Recommandation automatique** : Sélection intelligente de l'algorithme optimal selon la taille du problème
+*   **Rapports détaillés** : Classements par qualité et par vitesse, statistiques aggregées
+
+### 3.2. Stratégie de Recommandation Automatique
+
+Le système implémente une stratégie de recommandation basée sur la taille du scénario :
+
+```java
+public String recommanderAlgorithme(Scenario scenario) {
+    int nbVentes = scenario.getVentes().size();
+    
+    if (nbVentes <= 5) {
+        return "K Meilleures Solutions"; // Exhaustivité pour petits problèmes
+    } else if (nbVentes <= 15) {
+        return "Heuristique Glouton"; // Compromis qualité/vitesse
+    } else {
+        return "Parcours Simple"; // Vitesse pour gros problèmes
+    }
+}
+```
+
+Cette stratégie reflète le compromis fondamental entre qualité de solution et temps de calcul.
+
+---
 
