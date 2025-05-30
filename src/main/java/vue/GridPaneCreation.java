@@ -8,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 public class GridPaneCreation extends GridPane {
-    TextField textNom;
+    private static TextField textNom;
     public GridPaneCreation(Controleur controleur){
         this.setGridLinesVisible(true);
 
@@ -29,6 +29,9 @@ public class GridPaneCreation extends GridPane {
         this.add(labelNom, 0, 1);
         this.add(textNom, 1, 1, 4, 1);
         this.add(boutonCreation,2, 2, 2, 1);
+    }
 
+    public TextField getTextNom(){
+        return textNom;
     }
 }

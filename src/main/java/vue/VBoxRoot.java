@@ -10,15 +10,16 @@ import modele.ConstantesVues;
 import java.util.Objects;
 
 public class VBoxRoot extends VBox {
-    private static MenuBar menuBar;
+    private static Menu menuScenario;
     private static HBoxAffichage hBoxScenario;
     private static Controleur controleur;
+    private static ToggleGroup groupeScenario;
     public VBoxRoot() {
         super(10);
         controleur = new Controleur();
-        menuBar = new MenuBar();
-        Menu menuScenario = new Menu("Scenario");
-        ToggleGroup groupeScenario = new ToggleGroup();
+        MenuBar menuBar = new MenuBar();
+        menuScenario = new Menu("Scenario");
+        groupeScenario = new ToggleGroup();
         for (String item : new ConstantesVues().getItemsMenuScenarios()){
             RadioMenuItem menuItem = new RadioMenuItem(item);
             menuItem.setUserData(item);
@@ -37,8 +38,12 @@ public class VBoxRoot extends VBox {
         this.getChildren().addAll(menuBar, hBoxScenario);
     }
 
-    public static MenuBar getMenuBar(){
-        return menuBar;
+    public static Menu getMenuScenario(){
+        return menuScenario;
+    }
+
+    public static ToggleGroup getGroupeScenario(){
+        return groupeScenario;
     }
 
     public static HBoxAffichage gethBoxScenario(){
