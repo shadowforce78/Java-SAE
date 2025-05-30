@@ -142,5 +142,206 @@ public String recommanderAlgorithme(Scenario scenario) {
 
 Cette stratégie reflète le compromis fondamental entre qualité de solution et temps de calcul.
 
----
+### 3.3. Adaptation des algorithmes pour commencer et terminer à Vélizy
 
+Une exigence importante du projet était que tous les itinéraires commencent et se terminent à la ville de Vélizy. Les trois algorithmes ont été adaptés pour respecter cette contrainte :
+
+#### 3.3.1. Modification de l'algorithme de Parcours Simple
+
+L'algorithme de parcours simple a été modifié pour :
+1. Commencer l'itinéraire à Vélizy plutôt qu'à la ville du premier vendeur
+2. Ajouter un retour à Vélizy à la fin de l'itinéraire si nécessaire
+
+```java
+// Identification de la ville de Vélizy
+Ville velizy = null;
+for (Ville ville : carte.getToutesLesVilles()) {
+    if (ville.getNom().equalsIgnoreCase("Velizy")) {
+        velizy = ville;
+        break;
+    }
+}
+
+// Début à Vélizy
+Ville villeActuelle = velizy;
+itineraire.add(villeActuelle);
+
+// Parcours des ventes...
+
+// Retour à Vélizy à la fin si nécessaire
+if (!villeActuelle.equals(velizy)) {
+    itineraire.add(velizy);
+}
+```
+
+#### 3.3.2. Modification de l'algorithme Heuristique
+
+L'algorithme heuristique a également été adapté pour commencer et terminer à Vélizy, tout en conservant sa logique d'optimisation gloutonne. Cette adaptation permet de respecter la contrainte du point de départ/arrivée tout en minimisant la distance totale parcourue.
+
+#### 3.3.3. Modification de l'algorithme K Meilleures Solutions
+
+L'algorithme des K meilleures solutions a nécessité une adaptation plus complexe, notamment dans la fonction de backtracking :
+
+```java
+// Commencer le backtracking à partir de Vélizy
+itineraireActuel.add(velizy);
+
+// Lorsque toutes les ventes sont complètes, ajouter le retour à Vélizy
+if (ventesCompletes.size() == ventes.size()) {
+    // Ajouter le retour à Vélizy si nécessaire
+    Ville derniereVille = itineraireActuel.get(itineraireActuel.size() - 1);
+    int distanceFinale = distanceActuelle;
+    
+    List<Ville> itineraireComplet = new ArrayList<>(itineraireActuel);
+    if (!derniereVille.equals(velizy)) {
+        int distanceRetour = carte.getDistance(derniereVille, velizy);
+        if (distanceRetour != Integer.MAX_VALUE) {
+            itineraireComplet.add(velizy);
+            distanceFinale += distanceRetour;
+        } else {
+            return; // Impossible de retourner à Vélizy, solution invalide
+        }
+    }
+    
+    // Ajouter cette solution si elle fait partie des k meilleures
+    // ...
+}
+```
+
+Cette adaptation garantit que toutes les solutions explorées par l'algorithme commencent et terminent à Vélizy, permettant une comparaison équitable entre les différents algorithmes.
+
+## 4. Tests et Validation
+
+### 4.1. Stratégie de Tests Unitaires
+
+Pour assurer la qualité et la fiabilité du code, une stratégie complète de tests unitaires a été mise en place pour les composants clés du modèle, en particulier les algorithmes de parcours. Trois classes de tests ont été créées :
+
+1. **ParcoursSimpleTest** : Tests de l'algorithme de parcours simple
+2. **ParcoursHeuristiqueTest** : Tests de l'algorithme heuristique
+3. **KMeilleuresSolutionsTest** : Tests de l'algorithme des k meilleures solutions
+
+Ces tests vérifient plusieurs aspects critiques :
+
+#### 4.1.1. Validité des itinéraires générés
+
+Tous les itinéraires générés doivent respecter les contraintes fondamentales :
+
+```java
+@Test
+public void testGenererItineraire() {
+    List<Ville> itineraire = parcours.genererItineraire(scenario);
+    
+    // Vérifier que l'itinéraire n'est pas vide
+    assertFalse(itineraire.isEmpty(), "L'itinéraire ne devrait pas être vide");
+    
+    // Vérifier que l'itinéraire commence et se termine à Velizy
+    assertEquals("Velizy", itineraire.get(0).getNom(), "L'itinéraire doit commencer à Velizy");
+    assertEquals("Velizy", itineraire.get(itineraire.size() - 1).getNom(), 
+            "L'itinéraire doit terminer à Velizy");
+    
+    // Vérifier que l'itinéraire contient toutes les ventes
+    assertTrue(verifierToutesVentesCouvertes(itineraire, scenario),
+            "L'itinéraire doit couvrir toutes les ventes du scénario");
+}
+```
+
+#### 4.1.2. Respect de la contrainte vendeur → acheteur
+
+```java
+@Test
+public void testContrainteVendeurAcheteur() {
+    List<Ville> itineraire = parcours.genererItineraire(scenario);
+    
+    // Vérifier que pour chaque vente, le vendeur est visité avant l'acheteur
+    for (Vente vente : scenario.getVentes()) {
+        Ville villeVendeur = vente.getVendeur().getVille();
+        Ville villeAcheteur = vente.getAcheteur().getVille();
+        
+        int indexVendeur = trouverPremiereOccurrence(itineraire, villeVendeur);
+        int indexAcheteur = trouverDerniereOccurrence(itineraire, villeAcheteur);
+        
+        // Vérifications...
+        assertTrue(indexVendeur < indexAcheteur, 
+                "Le vendeur doit être visité avant l'acheteur pour chaque vente");
+    }
+}
+```
+
+#### 4.1.3. Précision du calcul de distance
+
+```java
+@Test
+public void testCalculerDistanceTotale() {
+    List<Ville> itineraire = parcours.genererItineraire(scenario);
+    int distanceTotale = parcours.calculerDistanceTotale(itineraire);
+    
+    // Vérifier que la distance est positive
+    assertTrue(distanceTotale > 0, "La distance totale doit être positive");
+    
+    // Recalculer manuellement la distance pour vérification
+    int distanceManuelle = 0;
+    for (int i = 0; i < itineraire.size() - 1; i++) {
+        int distance = carte.getDistance(itineraire.get(i), itineraire.get(i + 1));
+        distanceManuelle += distance;
+    }
+    
+    // Vérifier que les deux calculs correspondent
+    assertEquals(distanceManuelle, distanceTotale, 
+            "La distance calculée automatiquement doit correspondre au calcul manuel");
+}
+```
+
+### 4.2. Benchmarking et Comparaison des Performances
+
+En plus des tests unitaires qui valident la correction des algorithmes, des tests de performance ont été implémentés pour comparer objectivement les trois approches :
+
+```java
+@Test
+public void testComparaisonPerformance() {
+    // Charger un scénario
+    Scenario petitScenario = ScenarioParser.lireFichierScenario(fichierScenario.getPath(), fichierMembres.getPath());
+    
+    // Génération de l'itinéraire avec les trois algorithmes
+    ParcoursSimple parcoursSimple = new ParcoursSimple(carte);
+    ParcoursHeuristique parcoursHeuristique = new ParcoursHeuristique(carte);
+    KMeilleuresSolutions parcoursK = new KMeilleuresSolutions(carte, 3);
+    
+    // Mesure du temps d'exécution et des résultats
+    // ...
+    
+    System.out.println("=== COMPARAISON DES PERFORMANCES ===");
+    System.out.println("Temps parcours simple: " + (finSimple - debutSimple) + " ms");
+    System.out.println("Temps parcours heuristique: " + (finHeuristique - debutHeuristique) + " ms");
+    System.out.println("Temps K meilleures solutions: " + (finK - debutK) + " ms");
+    System.out.println("Distance parcours simple: " + distanceSimple + " km");
+    System.out.println("Distance parcours heuristique: " + distanceHeuristique + " km");
+    System.out.println("Distance K meilleures solutions: " + distanceK + " km");
+}
+```
+
+Les résultats de ces tests confirment le compromis entre qualité de solution et temps de calcul :
+- L'algorithme K Meilleures Solutions trouve généralement les itinéraires les plus courts mais devient prohibitif pour les grands scénarios
+- L'algorithme Heuristique offre un bon compromis qualité/temps pour les scénarios de taille moyenne
+- L'algorithme de Parcours Simple est le plus rapide mais produit des itinéraires plus longs
+
+## 5. Améliorations Possibles et Perspectives
+
+### 5.1. Optimisations algorithmiques
+
+Plusieurs pistes d'amélioration ont été identifiées pour les algorithmes existants :
+
+1. **Parallélisation** : Le calcul des K meilleures solutions pourrait bénéficier d'une parallélisation pour explorer plusieurs branches simultanément.
+
+2. **Heuristiques plus avancées** : Implémentation d'algorithmes métaheuristiques comme le recuit simulé ou les algorithmes génétiques pour des problèmes de grande taille.
+
+3. **Prétraitement intelligent** : Analyse préalable du graphe pour identifier des caractéristiques exploitables (clusters de villes, coupes minimales).
+
+### 5.2. Fonctionnalités supplémentaires
+
+1. **Visualisation graphique des itinéraires** : Représentation visuelle des parcours sur une carte réelle.
+
+2. **Contraintes temporelles** : Prise en compte de fenêtres de temps pour les rendez-vous avec les vendeurs et acheteurs.
+
+3. **Optimisation multi-objectif** : Permettre l'optimisation simultanée de plusieurs critères (distance, temps, coût).
+
+---

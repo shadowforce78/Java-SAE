@@ -8,7 +8,7 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
 
 * [x] Créer projet Maven + architecture MVC
 * [x] Lire les fichiers distances + membres + scénarios
-* [ ] Implémenter les classes :
+* [x] Implémenter les classes :
 
   * [x] `Ville`
   * [x] `Membre`
@@ -16,12 +16,12 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
   * [x] `Scenario`
   * [x] `CarteGraph`
 * [x] Algo 1 : Solution simple (cours de graphe)
-* [ ] Algo 2 : Heuristique (glouton/local opti)
-* [ ] Algo 3 : k meilleures solutions
+* [x] Algo 2 : Heuristique (glouton/local opti)
+* [x] Algo 3 : k meilleures solutions
 * [ ] Intégrer algo ↔ modèle ↔ IHM
 * [ ] Lecture / création / édition de scénarios
 * [ ] Sauvegarde de scénarios
-* [ ] Tests unitaires (modèle + algo + IHM)
+* [x] Tests unitaires (modèle + algo + IHM)
 * [ ] Interface graphique :
 
   * [ ] Menu principal
@@ -40,7 +40,7 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
 * [ ] Structure des fichiers / données
 * [ ] Captures d’écran IHM
 * [ ] Résultats de test
-* [ ] Javadoc
+* [x] Javadoc
 * [ ] Lien Git propre + lisible
 * [ ] Bilan personnel et tâches restantes
 * [ ] Perspectives d’amélioration
@@ -49,10 +49,11 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
 
 ### 📦 Finalisation
 
-* [ ] Code propre (formaté, commenté)
+* [x] Code propre (formaté, commenté)
 * [ ] Projet compilable sur PC école
 * [ ] Archive `.zip` complète
 * [ ] Répétition soutenance orale
 * [ ] Questions potentielles : algo ? graphes ? structure ?
 
 ---
+

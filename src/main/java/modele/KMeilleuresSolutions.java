@@ -10,6 +10,7 @@ import java.util.Set;
  * Classe implémentant l'algorithme des k meilleures solutions (Algo 3)
  * qui utilise un backtracking pour explorer différentes possibilités
  * et retourner les k meilleurs itinéraires selon la distance totale.
+ * L'itinéraire commence et se termine à Velizy.
  */
 public class KMeilleuresSolutions implements IAlgorithme {
 
@@ -45,8 +46,8 @@ public class KMeilleuresSolutions implements IAlgorithme {
 
     /**
      * Génère un itinéraire en retournant la meilleure solution parmi les k
-     * calculées.
-     * 
+     * calculées. L'itinéraire commence et se termine à Velizy.
+     *
      * @param scenario Le scénario contenant les ventes à effectuer
      * @return Liste des villes à visiter dans l'ordre de la meilleure solution
      */
@@ -58,7 +59,8 @@ public class KMeilleuresSolutions implements IAlgorithme {
 
     /**
      * Génère les k meilleures solutions pour un scénario donné.
-     * 
+     * Chaque solution commence et se termine à Velizy.
+     *
      * @param scenario Le scénario contenant les ventes à effectuer
      * @return Liste des k meilleures solutions triées par distance croissante
      */
@@ -67,6 +69,19 @@ public class KMeilleuresSolutions implements IAlgorithme {
 
         if (ventes.isEmpty()) {
             return new ArrayList<>();
+        }
+
+        // On récupère la ville Velizy comme point de départ et d'arrivée
+        Ville velizy = null;
+        for (Ville ville : carte.getToutesLesVilles()) {
+            if (ville.getNom().equalsIgnoreCase("Velizy")) {
+                velizy = ville;
+                break;
+            }
+        }
+
+        if (velizy == null) {
+            throw new IllegalStateException("La ville de Velizy n'a pas été trouvée dans la carte");
         }
 
         // PriorityQueue pour maintenir les k meilleures solutions
@@ -79,20 +94,19 @@ public class KMeilleuresSolutions implements IAlgorithme {
         Set<Vente> venteursVisites = new HashSet<>();
         Set<Vente> ventesCompletes = new HashSet<>();
 
-        // On commence par la ville du premier vendeur
-        Ville villeDepart = ventes.get(0).getVendeur().getVille();
-        itineraireActuel.add(villeDepart);
+        // On commence à Velizy
+        itineraireActuel.add(velizy);
 
         // Marquer toutes les ventes dont le vendeur est dans la ville de départ
         for (Vente vente : ventes) {
-            if (vente.getVendeur().getVille().equals(villeDepart)) {
+            if (vente.getVendeur().getVille().equals(velizy)) {
                 venteursVisites.add(vente);
             }
         }
 
         // Lancer le backtracking
         backtrackingSolutions(ventes, itineraireActuel, venteursVisites, ventesCompletes,
-                meilleuresSolutions, 0);
+                meilleuresSolutions, 0, velizy);
 
         // Convertir en liste triée (les meilleures en premier)
         List<Solution> resultat = new ArrayList<>(meilleuresSolutions);
@@ -103,20 +117,35 @@ public class KMeilleuresSolutions implements IAlgorithme {
 
     /**
      * Méthode récursive de backtracking pour explorer toutes les solutions
-     * possibles.
+     * possibles avec retour à Velizy.
      */
     private void backtrackingSolutions(List<Vente> ventes, List<Ville> itineraireActuel,
             Set<Vente> venteursVisites, Set<Vente> ventesCompletes,
-            PriorityQueue<Solution> meilleuresSolutions, int distanceActuelle) {
+            PriorityQueue<Solution> meilleuresSolutions, int distanceActuelle, Ville velizy) {
 
         // Condition d'arrêt : toutes les ventes sont complètes
         if (ventesCompletes.size() == ventes.size()) {
+            // Ajouter le retour à Velizy si nécessaire
+            Ville derniereVille = itineraireActuel.get(itineraireActuel.size() - 1);
+            int distanceFinale = distanceActuelle;
+
+            List<Ville> itineraireComplet = new ArrayList<>(itineraireActuel);
+            if (!derniereVille.equals(velizy)) {
+                int distanceRetour = carte.getDistance(derniereVille, velizy);
+                if (distanceRetour != Integer.MAX_VALUE) {
+                    itineraireComplet.add(velizy);
+                    distanceFinale += distanceRetour;
+                } else {
+                    return; // Impossible de retourner à Velizy, solution invalide
+                }
+            }
+
             // Ajouter cette solution si elle fait partie des k meilleures
             if (meilleuresSolutions.size() < k) {
-                meilleuresSolutions.offer(new Solution(itineraireActuel, distanceActuelle));
-            } else if (distanceActuelle < meilleuresSolutions.peek().distance) {
+                meilleuresSolutions.offer(new Solution(itineraireComplet, distanceFinale));
+            } else if (distanceFinale < meilleuresSolutions.peek().distance) {
                 meilleuresSolutions.poll(); // Retirer la pire solution
-                meilleuresSolutions.offer(new Solution(itineraireActuel, distanceActuelle));
+                meilleuresSolutions.offer(new Solution(itineraireComplet, distanceFinale));
             }
             return;
         }
@@ -186,7 +215,7 @@ public class KMeilleuresSolutions implements IAlgorithme {
 
             // Appel récursif
             backtrackingSolutions(ventes, itineraireActuel, venteursVisites, ventesCompletes,
-                    meilleuresSolutions, nouvelleDistanceActuelle);
+                    meilleuresSolutions, nouvelleDistanceActuelle, velizy);
 
             // Restaurer l'état (backtrack)
             itineraireActuel.clear();
