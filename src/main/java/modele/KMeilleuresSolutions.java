@@ -1,10 +1,6 @@
 package modele;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Classe implémentant l'algorithme des k meilleures solutions (Algo 3)
@@ -57,6 +53,14 @@ public class KMeilleuresSolutions implements IAlgorithme {
         return solutions.isEmpty() ? new ArrayList<>() : solutions.get(0).itineraire;
     }
 
+    public Map<Integer, List<Ville>> genererPlusieursItineraires(Scenario scenario) {
+        Map<Integer, List<Ville>> mapItineraires = new TreeMap<>();
+        List<Solution> solutions = genererKMeilleuresSolutions(scenario);
+        for (int i = 0; i < k; i++){
+            mapItineraires.put(i + 1, solutions.get(i).itineraire);
+        }
+        return mapItineraires;
+    }
     /**
      * Génère les k meilleures solutions pour un scénario donné.
      * Chaque solution commence et se termine à Velizy.

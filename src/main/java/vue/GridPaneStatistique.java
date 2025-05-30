@@ -8,9 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 public class GridPaneStatistique extends GridPane {
-    private Label labelNombreKilometre;
-    private ComboBox<String> choixAlgo = new ComboBox<>();
-    private ComboBox<Integer> kSolutions = new ComboBox<>();
+    private static Label labelNombreKilometre;
+    private static ComboBox<String> choixAlgo = new ComboBox<>();
+    private static ComboBox<Integer> kSolutions = new ComboBox<>();
     public GridPaneStatistique(Controleur controleur){
         this.setGridLinesVisible(true);
 
@@ -33,7 +33,7 @@ public class GridPaneStatistique extends GridPane {
             kSolutions.getItems().add(i);
         }
         labelKSolutions.setLabelFor(kSolutions);
-        kSolutions.setValue(3);
+        kSolutions.setValue(1);
 
         Button enregistrementAlgo = new Button("Selectionner l'algorithme");
         enregistrementAlgo.getStyleClass().add("button-green");
@@ -57,12 +57,19 @@ public class GridPaneStatistique extends GridPane {
     public void enableKSolutions(){
         kSolutions.setDisable(false);
     }
-
-    public String getAlgorithme(){
+    public void disableKSolutions(){
+        kSolutions.setValue(1);
+        kSolutions.setDisable(true);
+    }
+    public static String getAlgorithme(){
         return choixAlgo.getValue();
     }
 
     public void updateKilometres(int parKilometres){
         labelNombreKilometre.setText(String.valueOf(parKilometres));
+    }
+
+    public static int getKValue(){
+        return kSolutions.getValue();
     }
 }
