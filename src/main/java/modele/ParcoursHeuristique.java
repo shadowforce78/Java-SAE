@@ -24,7 +24,8 @@ public class ParcoursHeuristique implements IAlgorithme {
      * à chaque étape la prochaine destination la plus proche parmi les
      * destinations possibles (vendeurs non visités ou acheteurs dont le vendeur a
      * été visité).
-     * 
+     * L'itinéraire commence et se termine à Velizy.
+     *
      * @param scenario Le scénario contenant les ventes à effectuer
      * @return Liste des villes à visiter dans l'ordre optimisé
      */
@@ -37,17 +38,29 @@ public class ParcoursHeuristique implements IAlgorithme {
             return itineraire;
         }
 
+        // On récupère la ville Velizy comme point de départ et d'arrivée
+        Ville velizy = null;
+        for (Ville ville : carte.getToutesLesVilles()) {
+            if (ville.getNom().equalsIgnoreCase("Velizy")) {
+                velizy = ville;
+                break;
+            }
+        }
+
+        if (velizy == null) {
+            throw new IllegalStateException("La ville de Velizy n'a pas été trouvée dans la carte");
+        }
+
         // Ensemble des ventes pour lesquelles le vendeur a été visité
         Set<Vente> venteursVisites = new HashSet<>();
         // Ensemble des ventes complètement terminées (vendeur ET acheteur visités)
         Set<Vente> ventesCompletes = new HashSet<>();
 
-        // On commence par la ville du premier vendeur (comme l'algo simple)
-        Ville villeActuelle = ventes.get(0).getVendeur().getVille();
+        // On commence à Velizy
+        Ville villeActuelle = velizy;
         itineraire.add(villeActuelle);
 
-        // Marquer toutes les ventes dont le vendeur est dans cette ville comme "vendeur
-        // visité"
+        // Marquer toutes les ventes dont le vendeur est dans cette ville comme "vendeur visité"
         for (Vente vente : ventes) {
             if (vente.getVendeur().getVille().equals(villeActuelle)) {
                 venteursVisites.add(vente);
@@ -124,6 +137,11 @@ public class ParcoursHeuristique implements IAlgorithme {
                 // Situation d'erreur : aucune destination trouvée
                 throw new IllegalStateException("Impossible de trouver une prochaine destination valide");
             }
+        }
+
+        // On termine à Velizy (sauf si on y est déjà)
+        if (!villeActuelle.equals(velizy)) {
+            itineraire.add(velizy);
         }
 
         return itineraire;

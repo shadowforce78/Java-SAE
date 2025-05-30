@@ -16,6 +16,7 @@ public class ParcoursSimple implements IAlgorithme {
 
     /**
      * Génère un itinéraire simple en suivant l'ordre des ventes (vendeur → acheteur)
+     * et en commençant et terminant à Velizy.
      * @param scenario Le scénario contenant les ventes à effectuer
      * @return Liste des villes à visiter dans l'ordre
      */
@@ -28,8 +29,21 @@ public class ParcoursSimple implements IAlgorithme {
             return itineraire;
         }
 
-        // On commence par la ville du premier vendeur
-        Ville villeActuelle = ventes.get(0).getVendeur().getVille();
+        // On récupère la ville Velizy comme point de départ et d'arrivée
+        Ville velizy = null;
+        for (Ville ville : carte.getToutesLesVilles()) {
+            if (ville.getNom().equalsIgnoreCase("Velizy")) {
+                velizy = ville;
+                break;
+            }
+        }
+
+        if (velizy == null) {
+            throw new IllegalStateException("La ville de Velizy n'a pas été trouvée dans la carte");
+        }
+
+        // On commence à Velizy
+        Ville villeActuelle = velizy;
         itineraire.add(villeActuelle);
 
         // Pour chaque vente, on ajoute la ville du vendeur puis celle de l'acheteur
@@ -46,6 +60,11 @@ public class ParcoursSimple implements IAlgorithme {
             // On va ensuite à la ville de l'acheteur
             itineraire.add(villeAcheteur);
             villeActuelle = villeAcheteur;
+        }
+
+        // On termine à Velizy (sauf si on y est déjà)
+        if (!villeActuelle.equals(velizy)) {
+            itineraire.add(velizy);
         }
 
         return itineraire;
