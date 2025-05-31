@@ -2,10 +2,7 @@ package controleur;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.*;
 import modele.*;
 import vue.*;
 
@@ -13,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Controleur implements EventHandler {
 
@@ -95,9 +93,22 @@ public class Controleur implements EventHandler {
             }
         }
 
-        if(event.getSource() instanceof RadioMenuItem nouveauScenario){
-            String stringScenario = nouveauScenario.getText();
-            vBoxGauche.updateScenario(stringScenario);
+        if(event.getSource() instanceof RadioMenuItem menuItem){
+            if (menuItem.getUserData().equals("Quitter")){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Quitter l'application ?");
+                alert.setHeaderText("Êtes vous certains de vouloir quitter l'application ?");
+
+                Optional<ButtonType> option = alert.showAndWait();
+
+                if (option.get() == ButtonType.OK){
+                    System.exit(0);
+                }
+            }
+            else {
+                String stringScenario = menuItem.getText();
+                vBoxGauche.updateScenario(stringScenario);
+            }
         }
 
         if(event.getSource() instanceof ComboBox<?> comboBox){

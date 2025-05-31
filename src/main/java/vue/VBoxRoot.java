@@ -3,11 +3,8 @@ package vue;
 import controleur.Controleur;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import modele.ConstantesVues;
-
-import java.util.Objects;
 
 public class VBoxRoot extends VBox {
     private static Menu menuScenario;
@@ -31,6 +28,10 @@ public class VBoxRoot extends VBox {
             menuItem.addEventHandler(ActionEvent.ACTION, controleur);
         }
         Menu menuQuitter = new Menu("Quitter");
+        RadioMenuItem quitterItem = new RadioMenuItem("Quitter l'application ?");
+        quitterItem.setUserData("Quitter");
+        menuQuitter.getItems().add(quitterItem);
+        quitterItem.addEventHandler(ActionEvent.ACTION, controleur);
         menuBar.getMenus().addAll(menuScenario, menuQuitter);
 
         hBoxScenario = new HBoxAffichage();
