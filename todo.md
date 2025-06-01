@@ -25,10 +25,10 @@ Parfait. Voici ta **TODO list complète**, une **roadmap ultra détaillée jour 
 * [ ] Interface graphique :
 
   * [ ] Menu principal
-  * [ ] Choix scénario
+  * [x] Choix scénario
   * [ ] Création / édition scénario
-  * [ ] Affichage des solutions (itinéraire + km)
-  * [ ] Choix de l’algo
+  * [x] Affichage des solutions (itinéraire + km)
+  * [x] Choix de l’algo
 
 ---
 
