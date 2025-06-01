@@ -56,7 +56,9 @@ public class KMeilleuresSolutions implements IAlgorithme {
     public Map<Integer, List<Ville>> genererPlusieursItineraires(Scenario scenario) {
         Map<Integer, List<Ville>> mapItineraires = new TreeMap<>();
         List<Solution> solutions = genererKMeilleuresSolutions(scenario);
-        for (int i = 0; i < k; i++){
+
+        // Ne traiter que les solutions disponibles (potentiellement moins que k)
+        for (int i = 0; i < Math.min(k, solutions.size()); i++){
             mapItineraires.put(i + 1, solutions.get(i).itineraire);
         }
         return mapItineraires;

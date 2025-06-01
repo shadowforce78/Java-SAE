@@ -16,7 +16,7 @@ public class TestParcours {
             File dossierData = new File("pokemon_appli_data");
             File dossierScenarios = new File("scenario");
             File fichierDistances = new File(dossierData, "distances.txt");
-            File fichierScenario = new File(dossierScenarios, "scenario_0.txt");
+            File fichierScenario = new File(dossierScenarios, "scenario_4.txt");
             File fichierMembres = new File(dossierData, "membres_APPLI.txt");
 
             // Chargement des distances entre les villes
