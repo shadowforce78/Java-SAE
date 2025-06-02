@@ -70,5 +70,42 @@ public class TransactionFinder {
             System.out.println("Erreur lors de la suppression de la transaction : " + e.getMessage());
         }
     }
+
+    public void modifyTransaction(String ancienClient, String ancienVendeur, String nvClient, String nvVendeur) {
+        File file = new File("scenario" + File.separator + nomScenario);
+        StringBuilder newContent = new StringBuilder();
+
+        try {
+            FileReader fileReader = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fileReader);
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("->");
+
+                if (parts.length == 2) {
+                    String foundBuyer = parts[0].trim();
+                    String foundSeller = parts[1].trim();
+
+                    // Si c'est la ligne à modifier
+                    if (foundBuyer.equalsIgnoreCase(ancienVendeur) && foundSeller.equalsIgnoreCase(ancienClient)) {
+                        // On remplace par la nouvelle transaction
+                        line = nvClient.trim() + " -> " + nvVendeur.trim();
+                    }
+                    System.out.println(line);
+                }
+
+                newContent.append(line).append(System.lineSeparator());
+            }
+
+            Files.write(file.toPath(), newContent.toString().getBytes());
+
+            System.out.println("Transaction modifiée si elle existait.");
+
+        } catch (IOException e) {
+            System.out.println("Erreur lors de la modification : " + e.getMessage());
+        }
+    }
+
 }
 
