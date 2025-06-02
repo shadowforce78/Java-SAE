@@ -95,15 +95,7 @@ public class Controleur implements EventHandler {
 
         if(event.getSource() instanceof RadioMenuItem menuItem){
             if (menuItem.getUserData().equals("Quitter")){
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Quitter l'application ?");
-                alert.setHeaderText("Êtes vous certains de vouloir quitter l'application ?");
-
-                Optional<ButtonType> option = alert.showAndWait();
-
-                if (option.get() == ButtonType.OK){
-                    System.exit(0);
-                }
+                VBoxRoot.quitter();
             }
             else {
                 String stringScenario = menuItem.getText();

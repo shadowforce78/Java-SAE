@@ -6,6 +6,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import modele.ConstantesVues;
 
+import java.util.Optional;
+
 public class VBoxRoot extends VBox {
     private static Menu menuScenario;
     private static HBoxAffichage hBoxScenario;
@@ -53,5 +55,17 @@ public class VBoxRoot extends VBox {
 
     public static Controleur getControleur() {
         return controleur;
+    }
+
+    public static void quitter(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Quitter l'application ?");
+        alert.setHeaderText("Êtes vous certains de vouloir quitter l'application ?");
+
+        Optional<ButtonType> option = alert.showAndWait();
+
+        if (option.get() == ButtonType.OK){
+            System.exit(0);
+        }
     }
 }
