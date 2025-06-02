@@ -1,9 +1,6 @@
 package modele;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 
 public class TransactionFinder {
@@ -106,6 +103,18 @@ public class TransactionFinder {
             System.out.println("Erreur lors de la modification : " + e.getMessage());
         }
     }
+
+    public void addTransaction(String client, String vendeur) {
+        File file = new File("scenario" + File.separator + nomScenario);
+
+        try (FileWriter writer = new FileWriter(file, true)) {
+            writer.write(vendeur.trim() + " -> " + client.trim() + System.lineSeparator());
+            System.out.println("Transaction ajoutée avec succès.");
+        } catch (IOException e) {
+            System.out.println("Erreur lors de l'ajout de la transaction : " + e.getMessage());
+        }
+    }
+
 
 }
 

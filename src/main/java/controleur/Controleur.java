@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class Controleur implements EventHandler {
 
@@ -51,7 +50,28 @@ public class Controleur implements EventHandler {
                     transactions.removeTransaction(modification.getVendeur(), modification.getClient());
                 }
                 else{
-                    modification.alertModification();
+                    modification.alertModification(0);
+                }
+            }
+            else if (((Button) event.getSource()).getUserData().equals("Modification")){
+                System.out.println("Modification");
+                TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
+                if (transactions.containsTransaction(modification.getVendeur(), modification.getClient())) {
+                    transactions.modifyTransaction(modification.getClient(), modification.getVendeur(),
+                                                    modification.getNewClient(), modification.getNewVendeur());
+                }
+                else{
+                    modification.alertModification(1);
+                }
+            }
+            else if (((Button) event.getSource()).getUserData().equals("Ajout")){
+                System.out.println("Ajout");
+                TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
+                if (!transactions.containsTransaction(modification.getVendeur(), modification.getClient()) && !modification.isVendeurAndClientVides()) {
+                    transactions.addTransaction(modification.getClient(), modification.getVendeur());
+                }
+                else{
+                    modification.alertModification(2);
                 }
             }
             else if (((Button) event.getSource()).getUserData().equals("Création")){
@@ -116,6 +136,15 @@ public class Controleur implements EventHandler {
             }
             else{
                 statistique.disableKSolutions();
+            }
+        }
+
+        if(event.getSource() instanceof RadioButton selection){
+            if (selection.getUserData().equals("toggleModif")){
+                modification.enableNewTextField();
+            }
+            else{
+                modification.disableNewTextField();
             }
         }
     }
