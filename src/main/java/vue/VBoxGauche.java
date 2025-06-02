@@ -17,7 +17,7 @@ public class VBoxGauche extends VBox {
         gridStatParcours.getStyleClass().add("grid-orange");
         gridModif = new GridPaneModification(VBoxRoot.getControleur());
         gridModif.getStyleClass().add("grid-orange");
-        this.setMaxWidth(400);
+        this.setMaxWidth(500);
         this.getChildren().addAll(scenario, gridStatParcours, gridModif);
     }
 

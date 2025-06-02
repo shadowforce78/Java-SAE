@@ -16,7 +16,7 @@ public class fenetrePrincipale extends Application {
     @Override
     public void start(Stage stage) {
         VBox root = new VBoxRoot();
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1200, 600);
         stage.setScene(scene);
         stage.show();
 
