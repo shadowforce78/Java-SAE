@@ -1,22 +1,221 @@
-# Rapport d'Analyse et de Performance
+# Rapport de Projet SAÉ 2.01/2.02 - Application d'Optimisation d'Itinéraires Commerciaux
 
-## 1. Introduction et Architecture du Projet
+## Introduction
 
-Ce projet met en œuvre une application permettant de calculer des itinéraires optimisés pour des commerciaux devant visiter des clients. L'architecture logicielle suit le patron de conception **Modèle-Vue-Contrôleur (MVC)** :
+Cette application a été développée dans le cadre des SAÉ 2.01 (Développement d'une application) et 2.02 (Exploration algorithmique d'un problème). Elle résout un problème concret d'optimisation logistique : **la planification d'itinéraires pour des commerciaux devant effectuer des transactions entre vendeurs et acheteurs répartis dans différentes villes**.
 
-*   **Modèle (`modele`)**: Contient la logique métier de l'application.
-    *   Les classes comme `Ville`, `Membre`, `Vente`, `Scenario` représentent les données manipulées.
-    *   `CarteGraph` gère le graphe des villes et les distances.
-    *   Les algorithmes de calcul d'itinéraire (implémentant `IAlgorithme` comme `ParcoursSimple`) se trouvent également dans ce package.
-    *   `DistanceParser` et `ScenarioParser` s'occupent de la lecture des données depuis les fichiers.
-*   **Vue (`vue`)**: Responsable de l'interface utilisateur (IHM).
-    *   Des classes comme `fenetrePrincipale`, `GridPaneCreation`, `TableParcours` (probablement utilisant JavaFX ou Swing, basé sur `HelloApplication.java` et `hello-view.fxml`) construisent et affichent les informations à l'utilisateur.
-*   **Contrôleur (`controleur`)**: Fait le lien entre le Modèle et la Vue.
-    *   `Controleur` (et potentiellement `AlgorithmeController`, `HelloController`) reçoit les actions de l'utilisateur depuis la Vue, interagit avec le Modèle pour traiter ces actions (par exemple, charger un scénario, lancer un algorithme), et met à jour la Vue avec les résultats.
+### Objectifs de l'application
 
-Cette séparation des préoccupations permet une meilleure maintenabilité et testabilité du code.
+L'objectif principal est de calculer des parcours optimaux minimisant la distance totale parcourue, tout en respectant une contrainte fondamentale : pour chaque transaction, le commercial doit impérativement visiter le vendeur avant l'acheteur. De plus, tous les itinéraires doivent commencer et se terminer à Vélizy, ville de départ de l'entreprise.
 
-## 2. Description des Algorithmes et Analyse de Complexité
+### Problématique métier
+
+Dans un contexte commercial réel, l'optimisation des déplacements représente un enjeu économique majeur. Réduire les distances parcourues permet de :
+- Diminuer les coûts de transport (carburant, usure des véhicules)  
+- Augmenter la productivité en libérant du temps pour plus de transactions
+- Réduire l'impact environnemental des déplacements
+
+L'application propose trois approches algorithmiques différentes, chacune adaptée à des contextes spécifiques selon la taille du problème et les contraintes de temps de calcul.
+
+### Technologies utilisées
+
+- **Langage** : Java 17
+- **Framework de build** : Maven  
+- **Interface utilisateur** : JavaFX
+- **Architecture** : Modèle-Vue-Contrôleur (MVC)
+- **Tests** : JUnit 5
+- **Structure de données** : Collections Java (HashMap, ArrayList, PriorityQueue)
+
+## 2. Conception
+
+### 2.1. Architecture générale - Modèle-Vue-Contrôleur (MVC)
+
+L'application suit rigoureusement le patron de conception **Modèle-Vue-Contrôleur (MVC)**, garantissant une séparation claire des responsabilités et une maintenabilité optimale du code.
+
+#### 2.1.1. Vue d'ensemble de l'architecture
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│      VUE        │    │   CONTRÔLEUR    │    │     MODÈLE      │
+│                 │    │                 │    │                 │
+│ - Interface     │◄──►│ - Gestion       │◄──►│ - Logique       │
+│   utilisateur   │    │   événements    │    │   métier        │
+│ - Affichage     │    │ - Coordination  │    │ - Algorithmes   │
+│ - Interactions  │    │   MVC           │    │ - Données       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### 2.2. Composant Modèle (`package modele`)
+
+Le modèle encapsule toute la logique métier de l'application. Il est structuré autour de plusieurs sous-systèmes :
+
+#### 2.2.1. Classes de données métier
+
+**`Ville.java`**
+- **Rôle** : Représente une ville avec ses coordonnées géographiques
+- **Attributs** :
+  - `String nom` : Nom de la ville
+  - `double x, y` : Coordonnées géographiques
+- **Justification** : Structure simple mais essentielle pour le calcul des distances
+
+**`Membre.java`**
+- **Rôle** : Représente un vendeur ou acheteur
+- **Attributs** :
+  - `String pseudo` : Identifiant unique du membre
+  - `Ville ville` : Ville de résidence
+- **Structure de données** : Utilisation d'un lien direct vers l'objet `Ville` pour éviter les recherches répétées
+
+**`Vente.java`**
+- **Rôle** : Représente une transaction entre un vendeur et un acheteur
+- **Attributs** :
+  - `Membre vendeur` : Le vendeur de la transaction
+  - `Membre acheteur` : L'acheteur de la transaction
+- **Contrainte métier** : Assure la contrainte fondamentale vendeur → acheteur
+
+**`Scenario.java`**
+- **Rôle** : Conteneur pour un ensemble de ventes à traiter
+- **Attributs** :
+  - `String nom` : Nom du scénario
+  - `List<Vente> ventes` : Liste ordonnée des ventes
+- **Choix de structure** : `ArrayList` pour garantir l'ordre et permettre l'accès indexé
+
+#### 2.2.2. Système de graphe et distances
+
+**`CarteGraph.java`**
+- **Rôle** : Gestionnaire du graphe des villes et des distances
+- **Structure de données principale** :
+```java
+private Map<Pair<Ville, Ville>, Integer> distances;
+```
+- **Justification du choix** :
+  - `HashMap` pour un accès en O(1) aux distances
+  - `Pair<Ville, Ville>` comme clé pour représenter les arêtes du graphe
+  - Gestion de la symétrie automatique (distance A→B = distance B→A)
+
+**`Pair.java`**
+- **Rôle** : Classe utilitaire pour représenter une paire ordonnée
+- **Implémentation** : Override des méthodes `equals()` et `hashCode()` pour utilisation comme clé de HashMap
+- **Avantage** : Permet d'indexer efficacement les distances entre villes
+
+#### 2.2.3. Parseurs et gestion des fichiers
+
+**`DistanceParser.java`**
+- **Rôle** : Lecture et parsing du fichier des distances
+- **Méthode principale** :
+```java
+public static Map<Pair<Ville, Ville>, Integer> lireFichierDistances(String cheminFichier)
+```
+- **Traitement** : Parsing ligne par ligne avec gestion des erreurs et validation des données
+
+**`ScenarioParser.java`**
+- **Rôle** : Lecture et création des scénarios depuis les fichiers
+- **Fonctionnalités** :
+  - Parsing des fichiers de scénarios (format "Vendeur -> Acheteur")
+  - Résolution des références vers les membres
+  - Validation de la cohérence des données
+
+#### 2.2.4. Interface et algorithmes
+
+**`IAlgorithme.java`** (Interface)
+- **Rôle** : Contrat uniforme pour tous les algorithmes de parcours
+- **Méthodes** :
+```java
+List<Ville> genererItineraire(Scenario scenario);
+int calculerDistanceTotale(List<Ville> itineraire);
+String getNom();
+```
+- **Avantage** : Polymorphisme permettant l'interchangeabilité des algorithmes
+
+### 2.3. Composant Vue (`package vue`)
+
+Le composant Vue gère entièrement l'interface utilisateur avec JavaFX.
+
+#### 2.3.1. Architecture de l'interface
+
+**`HelloApplication.java`**
+- **Rôle** : Point d'entrée de l'application JavaFX
+- **Responsabilité** : Initialisation de la fenêtre principale et du système de vues
+
+**`fenetrePrincipale.java`**
+- **Rôle** : Fenêtre principale de l'application
+- **Structure** : Organisation en panneaux spécialisés
+
+#### 2.3.2. Panneaux spécialisés
+
+**`HBoxAffichage.java`**
+- **Rôle** : Conteneur principal organisant la vue en zones gauche et droite
+- **Layout** : HBox pour une disposition horizontale
+
+**`VBoxGauche.java`** et **`VBoxDroite.java`**
+- **Rôle** : Panneaux spécialisés pour différentes fonctionnalités
+- **Organisation** : VBox pour un empilement vertical des composants
+
+**`GridPaneModification.java`**, **`GridPaneStatistique.java`**, **`GridPaneCreation.java`**
+- **Rôle** : Interfaces spécialisées pour :
+  - Modification des scénarios existants
+  - Affichage des statistiques et résultats
+  - Création de nouveaux scénarios
+- **Layout** : GridPane pour une disposition tabulaire
+
+#### 2.3.3. Composants d'affichage
+
+**`TableVente.java`**
+- **Rôle** : Tableau d'affichage des ventes d'un scénario
+- **Structure** : TableView JavaFX avec colonnes configurées
+
+**`StackPaneParcours.java`**
+- **Rôle** : Zone d'affichage des résultats de parcours
+- **Fonctionnalités** : Affichage des itinéraires et distances
+
+### 2.4. Composant Contrôleur (`package controleur`)
+
+#### 2.4.1. Contrôleur principal
+
+**`Controleur.java`**
+- **Rôle** : Gestionnaire principal des événements de l'interface
+- **Pattern** : Implementation d'`EventHandler<Event>`
+- **Responsabilités** :
+  - Capture des événements boutons et menus
+  - Coordination entre Vue et Modèle
+  - Gestion des changements d'état de l'application
+
+#### 2.4.2. Contrôleur spécialisé
+
+**`AlgorithmeController.java`**
+- **Rôle** : Contrôleur dédié à la gestion des algorithmes
+- **Pattern** : Singleton pour garantir une instance unique
+- **Fonctionnalités** :
+  - Enregistrement et gestion des algorithmes disponibles
+  - Exécution des algorithmes avec paramètres
+  - Comparaison des performances
+  - Recommandation automatique d'algorithmes
+
+**Structure interne** :
+```java
+private static AlgorithmeController instance;
+private Map<String, IAlgorithme> algorithmes;
+private CarteGraph carte;
+```
+
+### 2.5. Utilitaires et extensions
+
+#### 2.5.1. Système de benchmark
+
+**`BenchmarkAlgorithmes.java`**
+- **Rôle** : Évaluation comparative des performances des algorithmes
+- **Métriques** :
+  - Temps d'exécution (précision nanoseconde)
+  - Qualité de la solution (distance totale)
+  - Ratio efficacité/performance
+
+#### 2.5.2. Sauvegarde et persistance
+
+**`SauvegardeScenario.java`**
+- **Rôle** : Gestion de la sauvegarde de nouveaux scénarios
+- **Fonctionnalités** :
+  - Génération automatique de noms de fichiers uniques
+  - Validation du format des données
+  - Écriture dans le format standard de l'application
 
 ### 2.1. Algorithme de Parcours Simple (`ParcoursSimple.java`)
 
@@ -323,25 +522,3 @@ Les résultats de ces tests confirment le compromis entre qualité de solution e
 - L'algorithme K Meilleures Solutions trouve généralement les itinéraires les plus courts mais devient prohibitif pour les grands scénarios
 - L'algorithme Heuristique offre un bon compromis qualité/temps pour les scénarios de taille moyenne
 - L'algorithme de Parcours Simple est le plus rapide mais produit des itinéraires plus longs
-
-## 5. Améliorations Possibles et Perspectives
-
-### 5.1. Optimisations algorithmiques
-
-Plusieurs pistes d'amélioration ont été identifiées pour les algorithmes existants :
-
-1. **Parallélisation** : Le calcul des K meilleures solutions pourrait bénéficier d'une parallélisation pour explorer plusieurs branches simultanément.
-
-2. **Heuristiques plus avancées** : Implémentation d'algorithmes métaheuristiques comme le recuit simulé ou les algorithmes génétiques pour des problèmes de grande taille.
-
-3. **Prétraitement intelligent** : Analyse préalable du graphe pour identifier des caractéristiques exploitables (clusters de villes, coupes minimales).
-
-### 5.2. Fonctionnalités supplémentaires
-
-1. **Visualisation graphique des itinéraires** : Représentation visuelle des parcours sur une carte réelle.
-
-2. **Contraintes temporelles** : Prise en compte de fenêtres de temps pour les rendez-vous avec les vendeurs et acheteurs.
-
-3. **Optimisation multi-objectif** : Permettre l'optimisation simultanée de plusieurs critères (distance, temps, coût).
-
----
