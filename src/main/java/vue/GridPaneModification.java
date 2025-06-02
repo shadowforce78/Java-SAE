@@ -17,10 +17,11 @@ public class GridPaneModification extends GridPane {
         this.setGridLinesVisible(true);
 
         ToggleGroup toggleChoix = new ToggleGroup();
-        RadioButton choixSupression = new RadioButton("Supprimer / Ajout");
-        choixSupression.setToggleGroup(toggleChoix);
-        choixSupression.setUserData("toggleSupAjout");
-        choixSupression.addEventHandler(ActionEvent.ACTION, controleur);
+        RadioButton choixSupAjout = new RadioButton("Supprimer / Ajout");
+        choixSupAjout.setSelected(true);
+        choixSupAjout.setToggleGroup(toggleChoix);
+        choixSupAjout.setUserData("toggleSupAjout");
+        choixSupAjout.addEventHandler(ActionEvent.ACTION, controleur);
         RadioButton choixModification = new RadioButton("Modification");
         choixModification.setToggleGroup(toggleChoix);
         choixModification.setUserData("toggleModif");
@@ -65,7 +66,7 @@ public class GridPaneModification extends GridPane {
 
         this.add(new Label("Mise à jour d'une transaction"), 2, 0, 5, 1);
         this.add(new Label("Type : "), 0, 1);
-        this.add(choixSupression, 1, 1, 2, 1);
+        this.add(choixSupAjout, 1, 1, 2, 1);
         this.add(choixModification, 5, 1);
         this.add(labelVendeur, 0, 2);
         this.add(textVendeur, 1, 2, 2, 1);
