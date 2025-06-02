@@ -44,8 +44,15 @@ public class Controleur implements EventHandler {
         }
 
         if(event.getSource() instanceof Button){
-            if (((Button) event.getSource()).getUserData().equals("Modification")){
-                System.out.println("Modification");
+            if (((Button) event.getSource()).getUserData().equals("Suppression")){
+                System.out.println("Suppression");
+                TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
+                if (transactions.containsTransaction(modification.getVendeur(), modification.getClient())) {
+                    transactions.removeTransaction(modification.getVendeur(), modification.getClient());
+                }
+                else{
+                    modification.alertModification();
+                }
             }
             else if (((Button) event.getSource()).getUserData().equals("Création")){
                 System.out.println("Création");
