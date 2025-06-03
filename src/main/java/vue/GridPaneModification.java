@@ -174,12 +174,18 @@ public class GridPaneModification extends GridPane {
             alert = new Alert(Alert.AlertType.ERROR, "Cette transaction n'existe pas. Veuillez réessayer",
                     ButtonType.OK);
             alert.setTitle("Erreur");
-            alert.setHeaderText("Erreur de suppression");
+            alert.setHeaderText("Erreur de suppression / modification");
             Optional<ButtonType> option = alert.showAndWait();
         } else if (code == 1) {
             alert = new Alert(Alert.AlertType.INFORMATION, "Transaction modifiée avec succès !", ButtonType.OK);
             alert.setTitle("Succès");
             alert.setHeaderText("Modification terminée");
+            Optional<ButtonType> option = alert.showAndWait();
+        }
+        else if (code == 2) {
+            alert = new Alert(Alert.AlertType.ERROR, "Valeurs nulles ou transaction déjà existante. Veuillez réessayer", ButtonType.OK);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Ajout impossible");
             Optional<ButtonType> option = alert.showAndWait();
         }
     }

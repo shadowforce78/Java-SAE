@@ -70,6 +70,7 @@ public class Controleur implements EventHandler {
                 TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
                 if (transactions.containsTransaction(modification.getVendeur(), modification.getClient())) {
                     transactions.removeTransaction(modification.getVendeur(), modification.getClient());
+                    modification.alertModification(1);
                 } else {
                     modification.alertModification(0);
                 }
@@ -79,8 +80,9 @@ public class Controleur implements EventHandler {
                 if (transactions.containsTransaction(modification.getVendeur(), modification.getClient())) {
                     transactions.modifyTransaction(modification.getClient(), modification.getVendeur(),
                             modification.getNewClient(), modification.getNewVendeur());
-                } else {
                     modification.alertModification(1);
+                } else {
+                    modification.alertModification(0);
                 }
             } else if (((Button) event.getSource()).getUserData().equals("Ajout")) {
                 System.out.println("Ajout");
@@ -88,6 +90,7 @@ public class Controleur implements EventHandler {
                 if (!transactions.containsTransaction(modification.getVendeur(), modification.getClient())
                         && !modification.isVendeurAndClientVides()) {
                     transactions.addTransaction(modification.getClient(), modification.getVendeur());
+                    modification.alertModification(1);
                 } else {
                     modification.alertModification(2);
                 }
