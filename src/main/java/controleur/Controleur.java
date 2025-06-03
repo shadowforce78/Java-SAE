@@ -167,4 +167,20 @@ public class Controleur implements EventHandler {
             return List.of(); // Retourne une liste vide en cas d'erreur
         }
     }
+
+    /**
+     * Récupère la liste des membres disponibles
+     * @return Liste des membres
+     */
+    public List<Membre> getMembres() {
+        File dossierData = new File("pokemon_appli_data");
+        File fichierMembres = new File(dossierData, "membres_APPLI.txt");
+
+        try {
+            return ScenarioParser.lireFichierMembres(fichierMembres.getPath());
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier membres : " + e.getMessage());
+            return List.of(); // Retourne une liste vide en cas d'erreur
+        }
+    }
 }

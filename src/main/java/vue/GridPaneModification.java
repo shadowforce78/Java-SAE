@@ -4,16 +4,18 @@ import controleur.Controleur;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 import modele.ConstantesVues;
+import modele.Membre;
 
 import java.util.List;
 import java.util.Optional;
 
 public class GridPaneModification extends GridPane {
-    private static ComboBox<String> comboVendeur;
-    private static ComboBox<String> comboClient;
-    private static ComboBox<String> comboNewVendeur;
-    private static ComboBox<String> comboNewClient;
+    private static ComboBox<Membre> comboVendeur;
+    private static ComboBox<Membre> comboClient;
+    private static ComboBox<Membre> comboNewVendeur;
+    private static ComboBox<Membre> comboNewClient;
 
     public GridPaneModification(Controleur controleur){
         this.setGridLinesVisible(true);
@@ -30,26 +32,43 @@ public class GridPaneModification extends GridPane {
         choixModification.addEventHandler(ActionEvent.ACTION, controleur);
 
         // Récupération de la liste des membres
-        List<String> membresPseudos = controleur.getMembresPseudos();
+        List<Membre> membres = controleur.getMembres();
+
+        // Définition du convertisseur pour afficher le pseudo et la ville
+        StringConverter<Membre> membreConverter = new StringConverter<>() {
+            @Override
+            public String toString(Membre membre) {
+                if (membre == null) return "";
+                return membre.getPseudo() + " (" + membre.getVille().getNom() + ")";
+            }
+
+            @Override
+            public Membre fromString(String string) {
+                return null; // Non utilisé car les combobox ne sont pas éditables
+            }
+        };
 
         Label labelVendeur = new Label("Vendeur");
         comboVendeur = new ComboBox<>();
         comboVendeur.setPromptText("Sélectionner un vendeur");
-        comboVendeur.getItems().addAll(membresPseudos);
+        comboVendeur.getItems().addAll(membres);
+        comboVendeur.setConverter(membreConverter);
         comboVendeur.setEditable(false);
         labelVendeur.setLabelFor(comboVendeur);
 
         Label labelClient = new Label("Client");
         comboClient = new ComboBox<>();
         comboClient.setPromptText("Sélectionner un client");
-        comboClient.getItems().addAll(membresPseudos);
+        comboClient.getItems().addAll(membres);
+        comboClient.setConverter(membreConverter);
         comboClient.setEditable(false);
         labelClient.setLabelFor(comboClient);
 
         Label labelNewVendeur = new Label("New");
         comboNewVendeur = new ComboBox<>();
         comboNewVendeur.setPromptText("Sélectionner un nouveau vendeur");
-        comboNewVendeur.getItems().addAll(membresPseudos);
+        comboNewVendeur.getItems().addAll(membres);
+        comboNewVendeur.setConverter(membreConverter);
         comboNewVendeur.setDisable(true);
         comboNewVendeur.setEditable(false);
         labelNewVendeur.setLabelFor(comboNewVendeur);
@@ -57,7 +76,8 @@ public class GridPaneModification extends GridPane {
         Label labelNewClient = new Label("New");
         comboNewClient = new ComboBox<>();
         comboNewClient.setPromptText("Sélectionner un nouveau client");
-        comboNewClient.getItems().addAll(membresPseudos);
+        comboNewClient.getItems().addAll(membres);
+        comboNewClient.setConverter(membreConverter);
         comboNewClient.setDisable(true);
         comboNewClient.setEditable(false);
         labelNewClient.setLabelFor(comboNewClient);
@@ -95,19 +115,23 @@ public class GridPaneModification extends GridPane {
     }
 
     public String getVendeur(){
-        return comboVendeur.getValue();
+        Membre vendeur = comboVendeur.getValue();
+        return vendeur != null ? vendeur.getPseudo() : null;
     }
 
     public String getClient(){
-        return comboClient.getValue();
+        Membre client = comboClient.getValue();
+        return client != null ? client.getPseudo() : null;
     }
 
     public String getNewVendeur(){
-        return comboNewVendeur.getValue();
+        Membre newVendeur = comboNewVendeur.getValue();
+        return newVendeur != null ? newVendeur.getPseudo() : null;
     }
 
     public String getNewClient(){
-        return comboNewClient.getValue();
+        Membre newClient = comboNewClient.getValue();
+        return newClient != null ? newClient.getPseudo() : null;
     }
 
     public boolean isVendeurAndClientVides(){
