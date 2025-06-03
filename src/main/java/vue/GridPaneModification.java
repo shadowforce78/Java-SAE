@@ -14,6 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.util.StringConverter;
 import modele.Membre;
 
@@ -22,6 +24,7 @@ public class GridPaneModification extends GridPane {
     private static ComboBox<Membre> comboClient;
     private static ComboBox<Membre> comboNewVendeur;
     private static ComboBox<Membre> comboNewClient;
+    private static Button boutonModifier;
 
     public GridPaneModification(Controleur controleur) {
         this.setGridLinesVisible(true);
@@ -95,9 +98,10 @@ public class GridPaneModification extends GridPane {
         boutonSuppresion.setUserData("Suppression");
         boutonSuppresion.addEventHandler(ActionEvent.ACTION, controleur);
 
-        Button boutonModifier = new Button("Modifier la vente");
+        boutonModifier = new Button("Modifier la vente");
         boutonModifier.getStyleClass().add("button-important");
         boutonModifier.setUserData("Modification");
+        boutonModifier.setDisable(true);
         boutonModifier.addEventHandler(ActionEvent.ACTION, controleur);
 
         Button boutonAjout = new Button("Ajouter une vente");
@@ -154,11 +158,16 @@ public class GridPaneModification extends GridPane {
     public void enableNewTextField() {
         comboNewVendeur.setDisable(false);
         comboNewClient.setDisable(false);
+        boutonModifier.setDisable(false);
+        boutonModifier.setDisable(false);
+
     }
 
     public void disableNewTextField() {
         comboNewVendeur.setDisable(true);
         comboNewClient.setDisable(true);
+        boutonModifier.setDisable(true);
+        boutonModifier.setDisable(true);
     }
 
     public void alertModification(int code) {
