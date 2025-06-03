@@ -132,10 +132,6 @@ Le composant Vue gère entièrement l'interface utilisateur avec JavaFX.
 
 #### 2.3.1. Architecture de l'interface
 
-**`HelloApplication.java`**
-- **Rôle** : Point d'entrée de l'application JavaFX
-- **Responsabilité** : Initialisation de la fenêtre principale et du système de vues
-
 **`fenetrePrincipale.java`**
 - **Rôle** : Fenêtre principale de l'application
 - **Structure** : Organisation en panneaux spécialisés
