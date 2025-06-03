@@ -104,9 +104,7 @@ public class Controleur implements EventHandler {
                 nvItem.setUserData(nom);
                 VBoxRoot.getMenuScenario().getItems().add(nvItem);
                 nvItem.setUserData(nom);
-            }
-
-            else if (((Button) event.getSource()).getUserData().equals("Stats")) {
+            } else if (((Button) event.getSource()).getUserData().equals("Stats")) {
                 System.out.println("Stats");
                 tableParcours.clearAll();
 
@@ -163,7 +161,7 @@ public class Controleur implements EventHandler {
 
     /**
      * Récupère la liste des pseudos de tous les membres disponibles
-     * 
+     *
      * @return Liste des pseudos des membres
      */
     public List<String> getMembresPseudos() {
@@ -183,7 +181,7 @@ public class Controleur implements EventHandler {
 
     /**
      * Récupère la liste des membres disponibles
-     * 
+     *
      * @return Liste des membres
      */
     public List<Membre> getMembres() {
