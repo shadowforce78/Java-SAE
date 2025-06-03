@@ -91,17 +91,17 @@ public class GridPaneModification extends GridPane {
         labelNewClient.setLabelFor(comboNewClient);
 
         Button boutonSuppresion = new Button("Supprimer la vente");
-        boutonSuppresion.getStyleClass().add("button-green");
+        boutonSuppresion.getStyleClass().add("button-important");
         boutonSuppresion.setUserData("Suppression");
         boutonSuppresion.addEventHandler(ActionEvent.ACTION, controleur);
 
         Button boutonModifier = new Button("Modifier la vente");
-        boutonModifier.getStyleClass().add("button-green");
+        boutonModifier.getStyleClass().add("button-important");
         boutonModifier.setUserData("Modification");
         boutonModifier.addEventHandler(ActionEvent.ACTION, controleur);
 
         Button boutonAjout = new Button("Ajouter une vente");
-        boutonAjout.getStyleClass().add("button-green");
+        boutonAjout.getStyleClass().add("button-important");
         boutonAjout.setUserData("Ajout");
         boutonAjout.addEventHandler(ActionEvent.ACTION, controleur);
 

@@ -22,7 +22,7 @@ public class GridPaneCreation extends GridPane {
         Button boutonCreation = new Button("_Créer un scénario");
         boutonCreation.setMnemonicParsing(true);
         boutonCreation.setUserData("Création");
-        boutonCreation.getStyleClass().add("button-green");
+        boutonCreation.getStyleClass().add("button-important");
         boutonCreation.addEventHandler(ActionEvent.ACTION, controleur);
 
         this.add(labelTitre, 1, 0, 3, 1);

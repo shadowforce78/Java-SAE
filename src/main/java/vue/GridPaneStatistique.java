@@ -36,7 +36,7 @@ public class GridPaneStatistique extends GridPane {
         kSolutions.setValue(1);
 
         Button enregistrementAlgo = new Button("Selectionner l'algorithme");
-        enregistrementAlgo.getStyleClass().add("button-green");
+        enregistrementAlgo.getStyleClass().add("button-important");
         enregistrementAlgo.setUserData("Stats");
         enregistrementAlgo.addEventHandler(ActionEvent.ACTION, controleur);
 
