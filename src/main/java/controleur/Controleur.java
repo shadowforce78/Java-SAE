@@ -148,4 +148,23 @@ public class Controleur implements EventHandler {
             }
         }
     }
+
+    /**
+     * Récupère la liste des pseudos de tous les membres disponibles
+     * @return Liste des pseudos des membres
+     */
+    public List<String> getMembresPseudos() {
+        File dossierData = new File("pokemon_appli_data");
+        File fichierMembres = new File(dossierData, "membres_APPLI.txt");
+
+        try {
+            List<Membre> membres = ScenarioParser.lireFichierMembres(fichierMembres.getPath());
+            return membres.stream()
+                    .map(Membre::getPseudo)
+                    .toList();
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la lecture du fichier membres : " + e.getMessage());
+            return List.of(); // Retourne une liste vide en cas d'erreur
+        }
+    }
 }

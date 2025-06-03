@@ -115,4 +115,15 @@ public class ScenarioParser {
 
         return membres;
     }
+
+    /**
+     * Lit le fichier des membres et retourne la liste des membres
+     * @param cheminFichierMembres Chemin vers le fichier des membres
+     * @return Liste des membres
+     * @throws IOException En cas d'erreur lors de la lecture du fichier
+     */
+    public static List<Membre> lireFichierMembres(String cheminFichierMembres) throws IOException {
+        Map<String, Membre> membresMap = chargerMembres(cheminFichierMembres);
+        return new ArrayList<>(membresMap.values());
+    }
 }

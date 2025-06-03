@@ -6,13 +6,15 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import modele.ConstantesVues;
 
+import java.util.List;
 import java.util.Optional;
 
 public class GridPaneModification extends GridPane {
-    private static TextField textVendeur;
-    private static TextField textClient;
-    private static TextField textNewVendeur;
-    private static TextField textNewClient;
+    private static ComboBox<String> comboVendeur;
+    private static ComboBox<String> comboClient;
+    private static ComboBox<String> comboNewVendeur;
+    private static ComboBox<String> comboNewClient;
+
     public GridPaneModification(Controleur controleur){
         this.setGridLinesVisible(true);
 
@@ -27,27 +29,38 @@ public class GridPaneModification extends GridPane {
         choixModification.setUserData("toggleModif");
         choixModification.addEventHandler(ActionEvent.ACTION, controleur);
 
+        // Récupération de la liste des membres
+        List<String> membresPseudos = controleur.getMembresPseudos();
+
         Label labelVendeur = new Label("Vendeur");
-        textVendeur = new TextField();
-        textVendeur.setPromptText("Nom du vendeur");
-        labelVendeur.setLabelFor(textVendeur);
+        comboVendeur = new ComboBox<>();
+        comboVendeur.setPromptText("Sélectionner un vendeur");
+        comboVendeur.getItems().addAll(membresPseudos);
+        comboVendeur.setEditable(false);
+        labelVendeur.setLabelFor(comboVendeur);
 
         Label labelClient = new Label("Client");
-        textClient = new TextField();
-        textClient.setPromptText("Nom du client");
-        labelClient.setLabelFor(textClient);
+        comboClient = new ComboBox<>();
+        comboClient.setPromptText("Sélectionner un client");
+        comboClient.getItems().addAll(membresPseudos);
+        comboClient.setEditable(false);
+        labelClient.setLabelFor(comboClient);
 
         Label labelNewVendeur = new Label("New");
-        textNewVendeur = new TextField();
-        textNewVendeur.setPromptText("Nom du nouveau vendeur");
-        textNewVendeur.setDisable(true);
-        labelNewVendeur.setLabelFor(textNewVendeur);
+        comboNewVendeur = new ComboBox<>();
+        comboNewVendeur.setPromptText("Sélectionner un nouveau vendeur");
+        comboNewVendeur.getItems().addAll(membresPseudos);
+        comboNewVendeur.setDisable(true);
+        comboNewVendeur.setEditable(false);
+        labelNewVendeur.setLabelFor(comboNewVendeur);
 
         Label labelNewClient = new Label("New");
-        textNewClient = new TextField();
-        textNewClient.setPromptText("Nom du nouveau client");
-        textNewClient.setDisable(true);
-        labelNewClient.setLabelFor(textNewClient);
+        comboNewClient = new ComboBox<>();
+        comboNewClient.setPromptText("Sélectionner un nouveau client");
+        comboNewClient.getItems().addAll(membresPseudos);
+        comboNewClient.setDisable(true);
+        comboNewClient.setEditable(false);
+        labelNewClient.setLabelFor(comboNewClient);
 
         Button boutonSuppresion =  new Button("Supprimer la vente");
         boutonSuppresion.getStyleClass().add("button-green");
@@ -69,57 +82,66 @@ public class GridPaneModification extends GridPane {
         this.add(choixSupAjout, 1, 1, 2, 1);
         this.add(choixModification, 5, 1);
         this.add(labelVendeur, 0, 2);
-        this.add(textVendeur, 1, 2, 2, 1);
+        this.add(comboVendeur, 1, 2, 2, 1);
         this.add(labelNewVendeur, 3, 2);
-        this.add(textNewVendeur, 4, 2, 2, 1);
+        this.add(comboNewVendeur, 4, 2, 2, 1);
         this.add(labelClient, 0, 3);
-        this.add(textClient, 1, 3, 2, 1);
+        this.add(comboClient, 1, 3, 2, 1);
         this.add(labelNewClient, 3, 3);
-        this.add(textNewClient, 4, 3, 2, 1);
+        this.add(comboNewClient, 4, 3, 2, 1);
         this.add(boutonSuppresion, 0, 4, 2, 1);
         this.add(boutonAjout, 2, 4);
         this.add(boutonModifier, 3, 4, 3, 1);
     }
 
     public String getVendeur(){
-        return textVendeur.getText();
+        return comboVendeur.getValue();
     }
 
     public String getClient(){
-        return textClient.getText();
+        return comboClient.getValue();
     }
 
     public String getNewVendeur(){
-        return textNewVendeur.getText();
+        return comboNewVendeur.getValue();
     }
 
     public String getNewClient(){
-        return textNewClient.getText();
+        return comboNewClient.getValue();
     }
 
     public boolean isVendeurAndClientVides(){
-        return textClient.getText().isEmpty() && textVendeur.getText().isEmpty();
+        return comboClient.getValue() == null && comboVendeur.getValue() == null;
     }
 
-    public void alertModification(int numMessage){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Erreur");
-        alert.setHeaderText(new ConstantesVues().getItemsModificationErreurs()[numMessage]);
-
-        Optional<ButtonType> option = alert.showAndWait();
-
-        if (option.get() == ButtonType.CLOSE){
-            alert.close();
-        }
+    public void toggleNewFields(boolean state){
+        comboNewVendeur.setDisable(!state);
+        comboNewClient.setDisable(!state);
     }
 
     public void enableNewTextField(){
-        textNewVendeur.setDisable(false);
-        textNewClient.setDisable(false);
+        comboNewVendeur.setDisable(false);
+        comboNewClient.setDisable(false);
     }
 
     public void disableNewTextField(){
-        textNewVendeur.setDisable(true);
-        textNewClient.setDisable(true);
+        comboNewVendeur.setDisable(true);
+        comboNewClient.setDisable(true);
+    }
+
+    public void alertModification(int code) {
+        Alert alert;
+        if (code == 0) {
+            alert = new Alert(Alert.AlertType.ERROR, "Cette transaction n'existe pas. Veuillez réessayer", ButtonType.OK);
+            alert.setTitle("Erreur");
+            alert.setHeaderText("Erreur de suppression");
+            Optional<ButtonType> option = alert.showAndWait();
+        }
+        else if (code == 1) {
+            alert = new Alert(Alert.AlertType.INFORMATION, "Transaction modifiée avec succès !", ButtonType.OK);
+            alert.setTitle("Succès");
+            alert.setHeaderText("Modification terminée");
+            Optional<ButtonType> option = alert.showAndWait();
+        }
     }
 }
