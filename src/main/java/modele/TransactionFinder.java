@@ -87,7 +87,7 @@ public class TransactionFinder {
                     // Si c'est la ligne à modifier
                     if (foundBuyer.equalsIgnoreCase(ancienVendeur) && foundSeller.equalsIgnoreCase(ancienClient)) {
                         // On remplace par la nouvelle transaction
-                        line = nvClient.trim() + " -> " + nvVendeur.trim();
+                        line = nvVendeur.trim() + " -> " + nvClient.trim();
                     }
                     System.out.println(line);
                 }
