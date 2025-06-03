@@ -9,8 +9,6 @@ public class HBoxAffichage extends HBox {
         super(30);
         vBoxGauche = new VBoxGauche();
         vBoxDroite = new VBoxDroite();
-        vBoxGauche.prefWidthProperty().bind(this.widthProperty().multiply(0.5));
-        vBoxDroite.prefWidthProperty().bind(this.widthProperty().multiply(0.5));
 
         this.getChildren().addAll(vBoxGauche, vBoxDroite);
     }

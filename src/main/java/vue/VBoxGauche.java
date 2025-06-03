@@ -1,6 +1,8 @@
 package vue;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import modele.ConstantesVues;
 
@@ -15,9 +17,13 @@ public class VBoxGauche extends VBox {
 
         gridStatParcours = new GridPaneStatistique(VBoxRoot.getControleur());
         gridStatParcours.getStyleClass().add("grid-orange");
+        gridStatParcours.setMaxWidth(Region.USE_PREF_SIZE);
         gridModif = new GridPaneModification(VBoxRoot.getControleur());
         gridModif.getStyleClass().add("grid-orange");
-        this.setMaxWidth(500);
+        gridModif.setMaxWidth(600);
+        gridModif.setAlignment(Pos.CENTER);
+
+        this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(scenario, gridStatParcours, gridModif);
     }
 

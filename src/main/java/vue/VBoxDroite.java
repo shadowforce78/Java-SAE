@@ -1,5 +1,7 @@
 package vue;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 
@@ -9,9 +11,13 @@ public class VBoxDroite extends VBox {
     public VBoxDroite(){
         super(20);
         table = new StackPaneParcours();
+        table.setMaxWidth(400);
         createScenario = new GridPaneCreation(VBoxRoot.getControleur());
         createScenario.getStyleClass().add("grid-orange");
-        this.setMaxWidth(500);
+        createScenario.setMaxWidth(400);
+        createScenario.setAlignment(Pos.CENTER);
+
+        this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(table, createScenario);
     }
 

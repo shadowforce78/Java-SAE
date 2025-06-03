@@ -2,6 +2,7 @@ package vue;
 
 import controleur.Controleur;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import modele.ConstantesVues;
@@ -37,7 +38,7 @@ public class VBoxRoot extends VBox {
         menuBar.getMenus().addAll(menuScenario, menuQuitter);
 
         hBoxScenario = new HBoxAffichage();
-
+        hBoxScenario.setAlignment(Pos.CENTER);
         this.getChildren().addAll(menuBar, hBoxScenario);
     }
 
