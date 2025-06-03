@@ -10,8 +10,9 @@ public class TableVente extends TableView<Vente>{
         TableColumn<Vente, String> vendeurColumn = new TableColumn<>("Vendeur");
         TableColumn<Vente, String> acheteurColumn = new TableColumn<>("Acheteur");
 
-        vendeurColumn.setCellValueFactory(new PropertyValueFactory<>("villeVendeur"));
-        acheteurColumn.setCellValueFactory(new PropertyValueFactory<>("villeAcheteur"));
+        // Utilisation des nouvelles méthodes formatées pour afficher "Pseudo (Ville)"
+        vendeurColumn.setCellValueFactory(new PropertyValueFactory<>("vendeurFormate"));
+        acheteurColumn.setCellValueFactory(new PropertyValueFactory<>("acheteurFormate"));
 
         this.getColumns().add(vendeurColumn);
         this.getColumns().add(acheteurColumn);

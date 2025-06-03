@@ -36,6 +36,33 @@ public class Vente {
     public String getVilleAcheteur(){
         return villeAcheteur;
     }
+
+    /**
+     * Retourne une représentation formatée du vendeur: "Pseudo (Ville)"
+     * @return String au format "Pseudo (Ville)"
+     */
+    public String getVendeurFormate() {
+        if (vendeur != null) {
+            return vendeur.getPseudo() + " (" + vendeur.getVille().getNom() + ")";
+        } else if (villeVendeur != null) {
+            return villeVendeur;
+        }
+        return "";
+    }
+
+    /**
+     * Retourne une représentation formatée de l'acheteur: "Pseudo (Ville)"
+     * @return String au format "Pseudo (Ville)"
+     */
+    public String getAcheteurFormate() {
+        if (acheteur != null) {
+            return acheteur.getPseudo() + " (" + acheteur.getVille().getNom() + ")";
+        } else if (villeAcheteur != null) {
+            return villeAcheteur;
+        }
+        return "";
+    }
+
     @Override
     public String toString() {
         return vendeur.getPseudo() + " → " + acheteur.getPseudo();
