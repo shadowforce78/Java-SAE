@@ -16,9 +16,12 @@ public class fenetrePrincipale extends Application {
     @Override
     public void start(Stage stage) {
         VBox root = new VBoxRoot();
-        Scene scene = new Scene(root, 1200, 600);
+        Scene scene = new Scene(root, 1200, 700);
         stage.setScene(scene);
         stage.show();
+        stage.setMinHeight(650);
+        stage.setMinWidth(1000);
+        stage.setMaximized(true);
 
         File fileCss = new File("css" + File.separator + "style.css");
         scene.getStylesheets().add(fileCss.toURI().toString());
