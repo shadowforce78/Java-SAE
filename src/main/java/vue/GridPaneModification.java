@@ -1,15 +1,21 @@
 package vue;
 
-import controleur.Controleur;
-import javafx.event.ActionEvent;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.util.StringConverter;
-import modele.ConstantesVues;
-import modele.Membre;
-
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import controleur.Controleur;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
+import modele.Membre;
 
 public class GridPaneModification extends GridPane {
     private static ComboBox<Membre> comboVendeur;
@@ -17,7 +23,7 @@ public class GridPaneModification extends GridPane {
     private static ComboBox<Membre> comboNewVendeur;
     private static ComboBox<Membre> comboNewClient;
 
-    public GridPaneModification(Controleur controleur){
+    public GridPaneModification(Controleur controleur) {
         this.setGridLinesVisible(true);
 
         ToggleGroup toggleChoix = new ToggleGroup();
@@ -29,16 +35,18 @@ public class GridPaneModification extends GridPane {
         RadioButton choixModification = new RadioButton("Modification");
         choixModification.setToggleGroup(toggleChoix);
         choixModification.setUserData("toggleModif");
-        choixModification.addEventHandler(ActionEvent.ACTION, controleur);
-
-        // Récupération de la liste des membres
+        choixModification.addEventHandler(ActionEvent.ACTION, controleur); // Récupération de la liste des membres
         List<Membre> membres = controleur.getMembres();
+
+        // Tri des membres par ordre alphabétique de leur pseudo
+        membres.sort(Comparator.comparing(Membre::getPseudo));
 
         // Définition du convertisseur pour afficher le pseudo et la ville
         StringConverter<Membre> membreConverter = new StringConverter<>() {
             @Override
             public String toString(Membre membre) {
-                if (membre == null) return "";
+                if (membre == null)
+                    return "";
                 return membre.getPseudo() + " (" + membre.getVille().getNom() + ")";
             }
 
@@ -82,17 +90,17 @@ public class GridPaneModification extends GridPane {
         comboNewClient.setEditable(false);
         labelNewClient.setLabelFor(comboNewClient);
 
-        Button boutonSuppresion =  new Button("Supprimer la vente");
+        Button boutonSuppresion = new Button("Supprimer la vente");
         boutonSuppresion.getStyleClass().add("button-green");
         boutonSuppresion.setUserData("Suppression");
         boutonSuppresion.addEventHandler(ActionEvent.ACTION, controleur);
 
-        Button boutonModifier =  new Button("Modifier la vente");
+        Button boutonModifier = new Button("Modifier la vente");
         boutonModifier.getStyleClass().add("button-green");
         boutonModifier.setUserData("Modification");
         boutonModifier.addEventHandler(ActionEvent.ACTION, controleur);
 
-        Button boutonAjout =  new Button("Ajouter une vente");
+        Button boutonAjout = new Button("Ajouter une vente");
         boutonAjout.getStyleClass().add("button-green");
         boutonAjout.setUserData("Ajout");
         boutonAjout.addEventHandler(ActionEvent.ACTION, controleur);
@@ -114,41 +122,41 @@ public class GridPaneModification extends GridPane {
         this.add(boutonModifier, 3, 4, 3, 1);
     }
 
-    public String getVendeur(){
+    public String getVendeur() {
         Membre vendeur = comboVendeur.getValue();
         return vendeur != null ? vendeur.getPseudo() : null;
     }
 
-    public String getClient(){
+    public String getClient() {
         Membre client = comboClient.getValue();
         return client != null ? client.getPseudo() : null;
     }
 
-    public String getNewVendeur(){
+    public String getNewVendeur() {
         Membre newVendeur = comboNewVendeur.getValue();
         return newVendeur != null ? newVendeur.getPseudo() : null;
     }
 
-    public String getNewClient(){
+    public String getNewClient() {
         Membre newClient = comboNewClient.getValue();
         return newClient != null ? newClient.getPseudo() : null;
     }
 
-    public boolean isVendeurAndClientVides(){
+    public boolean isVendeurAndClientVides() {
         return comboClient.getValue() == null && comboVendeur.getValue() == null;
     }
 
-    public void toggleNewFields(boolean state){
+    public void toggleNewFields(boolean state) {
         comboNewVendeur.setDisable(!state);
         comboNewClient.setDisable(!state);
     }
 
-    public void enableNewTextField(){
+    public void enableNewTextField() {
         comboNewVendeur.setDisable(false);
         comboNewClient.setDisable(false);
     }
 
-    public void disableNewTextField(){
+    public void disableNewTextField() {
         comboNewVendeur.setDisable(true);
         comboNewClient.setDisable(true);
     }
@@ -156,12 +164,12 @@ public class GridPaneModification extends GridPane {
     public void alertModification(int code) {
         Alert alert;
         if (code == 0) {
-            alert = new Alert(Alert.AlertType.ERROR, "Cette transaction n'existe pas. Veuillez réessayer", ButtonType.OK);
+            alert = new Alert(Alert.AlertType.ERROR, "Cette transaction n'existe pas. Veuillez réessayer",
+                    ButtonType.OK);
             alert.setTitle("Erreur");
             alert.setHeaderText("Erreur de suppression");
             Optional<ButtonType> option = alert.showAndWait();
-        }
-        else if (code == 1) {
+        } else if (code == 1) {
             alert = new Alert(Alert.AlertType.INFORMATION, "Transaction modifiée avec succès !", ButtonType.OK);
             alert.setTitle("Succès");
             alert.setHeaderText("Modification terminée");

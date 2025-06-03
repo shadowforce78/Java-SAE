@@ -1,15 +1,37 @@
 package controleur;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.*;
-import modele.*;
-import vue.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.RadioMenuItem;
+import modele.CarteGraph;
+import modele.DistanceParser;
+import modele.KMeilleuresSolutions;
+import modele.Membre;
+import modele.Pair;
+import modele.ParcoursHeuristique;
+import modele.ParcoursSimple;
+import modele.SauvegardeScenario;
+import modele.Scenario;
+import modele.ScenarioParser;
+import modele.TransactionFinder;
+import modele.Ville;
+import vue.GridPaneCreation;
+import vue.GridPaneModification;
+import vue.GridPaneStatistique;
+import vue.HBoxAffichage;
+import vue.StackPaneParcours;
+import vue.VBoxDroite;
+import vue.VBoxGauche;
+import vue.VBoxRoot;
 
 public class Controleur implements EventHandler {
 
@@ -42,45 +64,39 @@ public class Controleur implements EventHandler {
             throw new RuntimeException(e);
         }
 
-        if(event.getSource() instanceof Button){
-            if (((Button) event.getSource()).getUserData().equals("Suppression")){
+        if (event.getSource() instanceof Button) {
+            if (((Button) event.getSource()).getUserData().equals("Suppression")) {
                 System.out.println("Suppression");
                 TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
                 if (transactions.containsTransaction(modification.getVendeur(), modification.getClient())) {
                     transactions.removeTransaction(modification.getVendeur(), modification.getClient());
-                }
-                else{
+                } else {
                     modification.alertModification(0);
                 }
-            }
-            else if (((Button) event.getSource()).getUserData().equals("Modification")){
+            } else if (((Button) event.getSource()).getUserData().equals("Modification")) {
                 System.out.println("Modification");
                 TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
                 if (transactions.containsTransaction(modification.getVendeur(), modification.getClient())) {
                     transactions.modifyTransaction(modification.getClient(), modification.getVendeur(),
-                                                    modification.getNewClient(), modification.getNewVendeur());
-                }
-                else{
+                            modification.getNewClient(), modification.getNewVendeur());
+                } else {
                     modification.alertModification(1);
                 }
-            }
-            else if (((Button) event.getSource()).getUserData().equals("Ajout")){
+            } else if (((Button) event.getSource()).getUserData().equals("Ajout")) {
                 System.out.println("Ajout");
                 TransactionFinder transactions = new TransactionFinder(vBoxGauche.getScenario());
-                if (!transactions.containsTransaction(modification.getVendeur(), modification.getClient()) && !modification.isVendeurAndClientVides()) {
+                if (!transactions.containsTransaction(modification.getVendeur(), modification.getClient())
+                        && !modification.isVendeurAndClientVides()) {
                     transactions.addTransaction(modification.getClient(), modification.getVendeur());
-                }
-                else{
+                } else {
                     modification.alertModification(2);
                 }
-            }
-            else if (((Button) event.getSource()).getUserData().equals("Création")){
+            } else if (((Button) event.getSource()).getUserData().equals("Création")) {
                 System.out.println("Création");
                 String nom;
                 if (creation.getTextNom().getText().isEmpty()) {
                     nom = SauvegardeScenario.sauvegarderScenarioAuto(scenario);
-                }
-                else{
+                } else {
                     nom = creation.getTextNom().getText();
                     SauvegardeScenario.sauvegarderScenario(scenario, nom);
                 }
@@ -90,7 +106,7 @@ public class Controleur implements EventHandler {
                 nvItem.setUserData(nom);
             }
 
-            else if(((Button) event.getSource()).getUserData().equals("Stats")){
+            else if (((Button) event.getSource()).getUserData().equals("Stats")) {
                 System.out.println("Stats");
                 tableParcours.clearAll();
 
@@ -100,50 +116,46 @@ public class Controleur implements EventHandler {
                     ParcoursSimple parcoursSimple = new ParcoursSimple(carte);
                     itineraire = parcoursSimple.genererItineraire(scenario);
                     statistique.updateKilometres(parcoursSimple.calculerDistanceTotale(itineraire));
-                    tableParcours.ajoutTable(itineraire);
-                }
-                else if (GridPaneStatistique.getAlgorithme().equals("Heuristique")) {
+                    tableParcours.ajoutTable(itineraire, scenario);
+                } else if (GridPaneStatistique.getAlgorithme().equals("Heuristique")) {
                     ParcoursHeuristique parcoursHeuristique = new ParcoursHeuristique(carte);
                     itineraire = parcoursHeuristique.genererItineraire(scenario);
                     statistique.updateKilometres(parcoursHeuristique.calculerDistanceTotale(itineraire));
-                    tableParcours.ajoutTable(itineraire);
-                }
-                else if (GridPaneStatistique.getAlgorithme().equals("K Solutions")) {
+                    tableParcours.ajoutTable(itineraire, scenario);
+                } else if (GridPaneStatistique.getAlgorithme().equals("K Solutions")) {
                     KMeilleuresSolutions kSolutions = new KMeilleuresSolutions(carte, GridPaneStatistique.getKValue());
                     Map<Integer, List<Ville>> mapItineraires = kSolutions.genererPlusieursItineraires(scenario);
                     tableParcours.getListe().clear();
                     for (List<Ville> itineraireFromMap : mapItineraires.values()) {
-                        tableParcours.ajouterSolution(itineraireFromMap);
+                        tableParcours.ajouterSolution(itineraireFromMap, scenario);
                     }
-                    statistique.updateKilometres(kSolutions.calculerDistanceTotale(kSolutions.genererItineraire(scenario)));
+                    statistique.updateKilometres(
+                            kSolutions.calculerDistanceTotale(kSolutions.genererItineraire(scenario)));
                 }
             }
         }
 
-        if(event.getSource() instanceof RadioMenuItem menuItem){
-            if (menuItem.getUserData().equals("Quitter")){
+        if (event.getSource() instanceof RadioMenuItem menuItem) {
+            if (menuItem.getUserData().equals("Quitter")) {
                 VBoxRoot.quitter();
-            }
-            else {
+            } else {
                 String stringScenario = menuItem.getText();
                 vBoxGauche.updateScenario(stringScenario);
             }
         }
 
-        if(event.getSource() instanceof ComboBox<?> comboBox){
-            if (comboBox.getValue().equals("K Solutions")){
+        if (event.getSource() instanceof ComboBox<?> comboBox) {
+            if (comboBox.getValue().equals("K Solutions")) {
                 statistique.enableKSolutions();
-            }
-            else{
+            } else {
                 statistique.disableKSolutions();
             }
         }
 
-        if(event.getSource() instanceof RadioButton selection){
-            if (selection.getUserData().equals("toggleModif")){
+        if (event.getSource() instanceof RadioButton selection) {
+            if (selection.getUserData().equals("toggleModif")) {
                 modification.enableNewTextField();
-            }
-            else{
+            } else {
                 modification.disableNewTextField();
             }
         }
@@ -151,6 +163,7 @@ public class Controleur implements EventHandler {
 
     /**
      * Récupère la liste des pseudos de tous les membres disponibles
+     * 
      * @return Liste des pseudos des membres
      */
     public List<String> getMembresPseudos() {
@@ -170,6 +183,7 @@ public class Controleur implements EventHandler {
 
     /**
      * Récupère la liste des membres disponibles
+     * 
      * @return Liste des membres
      */
     public List<Membre> getMembres() {
