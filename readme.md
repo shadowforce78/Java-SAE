@@ -518,3 +518,163 @@ Les résultats de ces tests confirment le compromis entre qualité de solution e
 - L'algorithme K Meilleures Solutions trouve généralement les itinéraires les plus courts mais devient prohibitif pour les grands scénarios
 - L'algorithme Heuristique offre un bon compromis qualité/temps pour les scénarios de taille moyenne
 - L'algorithme de Parcours Simple est le plus rapide mais produit des itinéraires plus longs
+
+## 4. Fonctionnalités Avancées Implémentées
+
+### 4.1. Interface Utilisateur Enrichie
+
+L'application propose une interface utilisateur complète avec plusieurs fonctionnalités avancées :
+
+#### 4.1.1. Gestion Multi-Solutions
+- **Navigation entre solutions** : Pour l'algorithme K Meilleures Solutions, l'interface permet de naviguer entre les différentes solutions trouvées avec des boutons de navigation ("<<", "<", ">", ">>")
+- **Indicateur de position** : Affichage de la solution actuelle sous la forme "Solution X/Y"
+- **Superposition intelligente** : Les solutions sont empilées dans un StackPane permettant de passer de l'une à l'autre
+
+#### 4.1.2. Affichage Détaillé des Résultats
+- **Informations des membres** : Contrairement à un affichage basique qui ne montrerait que les noms des villes, l'application affiche les informations complètes des membres impliqués dans chaque étape du parcours
+- **Format enrichi** : Affichage sous la forme "Pseudo (Ville)" pour vendeurs et acheteurs
+- **Tri alphabétique** : Les listes déroulantes de modification sont triées par ordre alphabétique des pseudos
+
+#### 4.1.3. Outils de Gestion des Scénarios
+- **Création de nouveaux scénarios** : Interface dédiée pour créer des scénarios personnalisés
+- **Modification en temps réel** : Possibilité de modifier les scénarios existants
+- **Sauvegarde automatique** : Génération automatique de noms de fichiers pour les nouveaux scénarios
+
+### 4.2. Optimisations Techniques
+
+#### 4.2.1. Gestion Mémoire Efficace
+- **Réutilisation d'objets** : Les TableView sont réutilisées et simplement mises à jour plutôt que recréées
+- **Structures de données optimisées** : Utilisation de HashMap pour l'accès O(1) aux distances
+
+#### 4.2.2. Architecture Extensible
+- **Pattern Strategy** : L'interface `IAlgorithme` permet d'ajouter facilement de nouveaux algorithmes
+- **Séparation des responsabilités** : Architecture MVC stricte facilitant la maintenance
+
+## 5. Conclusion
+
+### 5.1. Bilan du Travail Accompli
+
+Ce projet a permis de développer une application complète et fonctionnelle répondant à un besoin concret d'optimisation logistique. Les principaux objectifs ont été atteints avec succès :
+
+#### 5.1.1. Objectifs Techniques Atteints
+✅ **Architecture MVC rigoureuse** : Séparation claire des responsabilités entre modèle, vue et contrôleur  
+✅ **Interface utilisateur complète** : Interface JavaFX intuitive et fonctionnelle  
+✅ **Trois algorithmes implémentés** : Chacun avec ses spécificités et domaines d'application  
+✅ **Gestion des contraintes métier** : Respect strict de la contrainte vendeur → acheteur  
+✅ **Système de benchmark** : Comparaison objective des performances  
+✅ **Tests unitaires complets** : Validation de la correction des algorithmes  
+
+#### 5.1.2. Apports Pédagogiques
+- **Algorithmique** : Maîtrise de différentes approches (glouton, exhaustif, simple)
+- **Structures de données** : Utilisation appropriée des collections Java
+- **Génie logiciel** : Application des bonnes pratiques de développement
+- **Interface homme-machine** : Conception d'interfaces utilisateur ergonomiques
+- **Tests et validation** : Mise en place d'une stratégie de tests robuste
+
+#### 5.1.3. Défis Relevés
+- **Gestion de la complexité algorithmique** : Équilibrage entre qualité de solution et performance
+- **Contraintes métier complexes** : Implémentation de la logique vendeur → acheteur dans tous les algorithmes
+- **Interface utilisateur avancée** : Gestion de l'affichage multi-solutions et navigation entre résultats
+- **Extensibilité** : Architecture permettant l'ajout facile de nouveaux algorithmes
+
+### 5.2. Tâches Non Réalisées et Limitations
+
+#### 5.2.1. Optimisations Algorithmiques Potentielles
+- **Algorithmes métaheuristiques** : Implémentation d'algorithmes génétiques ou de recuit simulé pour les très grands scénarios
+- **Parallélisation** : L'algorithme K Meilleures Solutions pourrait bénéficier d'une approche multi-thread
+- **Heuristiques avancées** : Intégration d'heuristiques plus sophistiquées (2-opt, 3-opt)
+
+#### 5.2.2. Fonctionnalités Additionnelles
+- **Import/Export de données** : Support de formats additionnels (CSV, JSON)
+- **Visualisation graphique** : Affichage cartographique des itinéraires
+- **Statistiques avancées** : Analyses plus poussées des performances et tendances
+
+#### 5.2.3. Interface Utilisateur
+- **Thèmes visuels** : Système de thèmes personnalisables
+- **Raccourcis clavier** : Navigation plus rapide dans l'interface
+- **Aide contextuelle** : Tooltips et documentation intégrée
+
+### 5.3. Perspectives d'Évolution et d'Amélioration
+
+#### 5.3.1. Évolutions Techniques
+1. **Migration vers une architecture microservices** : Séparation des algorithmes en services indépendants
+2. **Base de données** : Remplacement des fichiers texte par une base de données relationnelle
+3. **API REST** : Exposition des fonctionnalités via une API pour intégration dans d'autres systèmes
+4. **Interface web** : Développement d'une version web accessible depuis n'importe quel navigateur
+
+#### 5.3.2. Améliorations Algorithmiques
+1. **Algorithmes hybrides** : Combinaison des approches existantes pour maximiser les avantages
+2. **Apprentissage automatique** : Utilisation de l'historique pour prédire les meilleures stratégies
+3. **Optimisation multi-objectifs** : Prise en compte de critères additionnels (temps, coût, préférences)
+
+#### 5.3.3. Fonctionnalités Métier
+1. **Gestion des contraintes temporelles** : Intégration d'horaires d'ouverture, de créneaux de livraison
+2. **Optimisation multi-véhicules** : Répartition des parcours sur plusieurs commerciaux
+3. **Gestion des priorités** : Pondération des ventes selon leur importance
+4. **Simulation dynamique** : Adaptation en temps réel aux changements (annulations, ajouts)
+
+### 5.4. Retour d'Expérience
+
+Ce projet a représenté un excellent exercice d'application des concepts théoriques en informatique. La combinaison entre développement d'application (SAÉ 2.01) et exploration algorithmique (SAÉ 2.02) a permis d'appréhender la complexité des systèmes informatiques réels.
+
+**Points forts du projet :**
+- Problématique concrète et applicable en entreprise
+- Liberté dans le choix des algorithmes permettant la créativité
+- Intégration de multiples compétences techniques
+
+**Difficultés rencontrées :**
+- Équilibrage entre fonctionnalités et délais de réalisation
+- Optimisation des performances pour les scénarios complexes
+- Gestion de la complexité croissante du code
+
+Cette expérience confirme l'importance d'une architecture bien pensée dès le début du projet et de l'adoption de bonnes pratiques de développement pour maintenir la qualité du code à mesure que le projet évolue.
+
+## 6. Annexes
+
+### Annexe A : Dossier de Tests Unitaires
+
+Le projet inclut un ensemble complet de tests unitaires pour valider le comportement des algorithmes du modèle. Ces tests sont organisés dans le package `src/test/java/modele/` et comprennent :
+
+#### A.1. Structure des Tests
+
+```
+src/test/java/modele/
+├── ParcoursSimpleTest.java          # Tests de l'algorithme de parcours simple
+├── ParcoursHeuristiqueTest.java     # Tests de l'algorithme heuristique
+└── KMeilleuresSolutionsTest.java    # Tests de l'algorithme K meilleures solutions
+```
+
+#### A.2. Méthodologie de Test
+
+Chaque classe de test suit une méthodologie rigoureuse :
+
+1. **Setup des données de test** : Création de cartes et scénarios de test standardisés
+2. **Tests de validité** : Vérification que les itinéraires respectent toutes les contraintes
+3. **Tests de performance** : Mesure et comparaison des temps d'exécution
+4. **Tests de robustesse** : Gestion des cas limites et erreurs
+
+#### A.3. Couverture des Tests
+
+Les tests couvrent les aspects suivants :
+- ✅ Validation de la contrainte vendeur → acheteur
+- ✅ Vérification du départ et retour à Vélizy
+- ✅ Calcul correct des distances totales
+- ✅ Gestion des scénarios vides ou invalides
+- ✅ Comparaison des performances entre algorithmes
+
+#### A.4. Exécution des Tests
+
+Les résultats des tests incluent :
+- Temps d'exécution de chaque algorithme
+- Distances calculées pour différents scénarios
+
+### Annexe B : Lien vers le Dépôt Git
+
+**Dépôt GitHub** : https://github.com/shadowforce78/Java-SAE
+
+Le dépôt contient :
+- **Code source complet** avec commentaires détaillés
+- **Tests unitaires** avec rapports de couverture
+- **Documentation technique** (JavaDoc)
+- **Scripts de build** (Maven)
+- **Données de test** (scénarios et fichiers de distances)
