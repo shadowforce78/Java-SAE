@@ -26,7 +26,8 @@ public class GridPaneStatistique extends GridPane {
         choixAlgo.addEventHandler(ActionEvent.ACTION, controleur);
         choixAlgo.setValue(choixAlgo.getItems().getFirst());
 
-        Label labelKSolutions = new Label("k meilleurs solutions : ");
+        Label labelKSolutions = new Label("_k meilleurs solutions : ");
+        labelKSolutions.setMnemonicParsing(true);
         labelKSolutions.getStyleClass().add("label-info");
         kSolutions.setDisable(true);
         for (int i = 1; i < 11; i++){
@@ -35,7 +36,8 @@ public class GridPaneStatistique extends GridPane {
         labelKSolutions.setLabelFor(kSolutions);
         kSolutions.setValue(1);
 
-        Button enregistrementAlgo = new Button("Selectionner l'algorithme");
+        Button enregistrementAlgo = new Button("_Selectionner l'algorithme");
+        enregistrementAlgo.setMnemonicParsing(true);
         enregistrementAlgo.getStyleClass().add("button-important");
         enregistrementAlgo.setUserData("Stats");
         enregistrementAlgo.addEventHandler(ActionEvent.ACTION, controleur);

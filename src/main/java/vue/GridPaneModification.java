@@ -28,12 +28,14 @@ public class GridPaneModification extends GridPane {
         this.setGridLinesVisible(false);
 
         ToggleGroup toggleChoix = new ToggleGroup();
-        RadioButton choixSupAjout = new RadioButton("Supprimer / Ajout");
+        RadioButton choixSupAjout = new RadioButton("_Supprimer / Ajout");
+        choixSupAjout.setMnemonicParsing(true);
         choixSupAjout.setSelected(true);
         choixSupAjout.setToggleGroup(toggleChoix);
         choixSupAjout.setUserData("toggleSupAjout");
         choixSupAjout.addEventHandler(ActionEvent.ACTION, controleur);
-        RadioButton choixModification = new RadioButton("Modification");
+        RadioButton choixModification = new RadioButton("_Modification");
+        choixModification.setMnemonicParsing(true);
         choixModification.setToggleGroup(toggleChoix);
         choixModification.setUserData("toggleModif");
         choixModification.addEventHandler(ActionEvent.ACTION, controleur); // Récupération de la liste des membres
@@ -91,18 +93,21 @@ public class GridPaneModification extends GridPane {
         comboNewClient.setEditable(false);
         labelNewClient.setLabelFor(comboNewClient);
 
-        Button boutonSuppresion = new Button("Supprimer la vente");
+        Button boutonSuppresion = new Button("_Supprimer la vente");
+        boutonSuppresion.setMnemonicParsing(true);
         boutonSuppresion.getStyleClass().add("button-important");
         boutonSuppresion.setUserData("Suppression");
         boutonSuppresion.addEventHandler(ActionEvent.ACTION, controleur);
 
-        boutonModifier = new Button("Modifier la vente");
+        boutonModifier = new Button("_Modifier la vente");
+        boutonModifier.setMnemonicParsing(true);
         boutonModifier.getStyleClass().add("button-important");
         boutonModifier.setUserData("Modification");
         boutonModifier.setDisable(true);
         boutonModifier.addEventHandler(ActionEvent.ACTION, controleur);
 
-        Button boutonAjout = new Button("Ajouter une vente");
+        Button boutonAjout = new Button("_Ajouter une vente");
+        boutonAjout.setMnemonicParsing(true);
         boutonAjout.getStyleClass().add("button-important");
         boutonAjout.setUserData("Ajout");
         boutonAjout.addEventHandler(ActionEvent.ACTION, controleur);
