@@ -2,6 +2,7 @@ package vue;
 
 import java.util.List;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -41,11 +42,11 @@ public class StackPaneParcours extends VBox {
                 derniereSolution);
         this.getChildren().add(alignementBoutons);
         alignementBoutons.setDisable(true);
+        alignementBoutons.setAlignment(Pos.CENTER);
 
         solutionSuivante.setOnAction(e -> liste.getFirst().toFront());
 
         solutionPrecedente.setOnAction(e -> liste.getLast().toBack());
-
         derniereSolution.setOnAction(e -> {
             while (liste.getLast() != dernierListe) {
                 liste.getLast().toBack();
@@ -57,7 +58,6 @@ public class StackPaneParcours extends VBox {
             while (liste.getLast() != premierListe) {
                 liste.getFirst().toFront();
             }
-
         });
     }
 
