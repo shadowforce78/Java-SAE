@@ -10,7 +10,7 @@ import javafx.scene.layout.GridPane;
 public class GridPaneCreation extends GridPane {
     private static TextField textNom;
     public GridPaneCreation(Controleur controleur){
-        this.setGridLinesVisible(true);
+        this.setGridLinesVisible(false);
 
         Label labelTitre = new Label("Création d'un scénario");
         Label labelNom = new Label("_Nom du scénario");

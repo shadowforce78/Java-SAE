@@ -25,7 +25,7 @@ public class GridPaneModification extends GridPane {
     private static Button boutonModifier;
 
     public GridPaneModification(Controleur controleur) {
-        this.setGridLinesVisible(true);
+        this.setGridLinesVisible(false);
 
         ToggleGroup toggleChoix = new ToggleGroup();
         RadioButton choixSupAjout = new RadioButton("Supprimer / Ajout");

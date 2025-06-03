@@ -12,7 +12,7 @@ public class GridPaneStatistique extends GridPane {
     private static ComboBox<String> choixAlgo = new ComboBox<>();
     private static ComboBox<Integer> kSolutions = new ComboBox<>();
     public GridPaneStatistique(Controleur controleur){
-        this.setGridLinesVisible(true);
+        this.setGridLinesVisible(false);
 
         Label labelKilometre = new Label("Kilomètres parcourus : ");
         labelNombreKilometre = new Label("");
