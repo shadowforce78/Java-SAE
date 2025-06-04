@@ -33,6 +33,7 @@ build/
 
 ### VS Code ###
 .vscode/
+EXPLICATION_PROJET_ENFANT.txt
 
 ### Mac OS ###
 .DS_Store
